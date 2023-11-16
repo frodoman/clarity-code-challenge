@@ -39,3 +39,48 @@
 })
 
 (define-map Investments {contributor: principal, campaignId: uint} {amount: uint})
+
+;; get-campaign
+;; view campaign information
+(define-read-only (get-campaign (user-principal principal) (campaignId uint)) 
+    (let 
+        (
+            (investment-id {contributor: user-principal, campaignId: campaignId})
+        )
+        (map-get? Investments investment-id)
+    )
+)
+
+;; launch
+;; [types.utf8('Test Campaign'), types.buff('This is a campaign that I made.'), 
+;; types.utf8('https://example.com'), types.uint(10000), types.uint(2), types.uint(100)]
+(define-public (launch (title (string-utf8 256)) 
+                       (desp (buff 33)) 
+                       (link (string-utf8 256))
+                       (goal uint)
+                       (begin-with uint)
+                       (end-at uint)) 
+    (let 
+        (
+            (current-id (var-get last-id))
+            (next-id (+ current-id u1))
+        )   
+
+        (map-set Campaigns current-id {
+            title: title,
+            description: desp, 
+            link: link,
+            fundGoal: goal,
+            startsAt: begin-with,
+            endsAt: end-at, 
+            campaignOwner: tx-sender,
+            pledgedCount: u0,
+            pledgedAmount: u0,
+            claimed: false,
+            targetReached: false,
+            targetReachedBy: u0 })
+
+        (var-set last-id next-id)
+        (ok next-id)
+    )
+)

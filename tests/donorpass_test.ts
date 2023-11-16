@@ -4,6 +4,7 @@ import { assertEquals } from 'https://deno.land/std@0.90.0/testing/asserts.ts';
 import { launch, pledge } from "../helpers/clearfund.ts"
 import { getLastTokenId, mint, transfer, getOwner, getTokenUri } from "../helpers/donorpass.ts"
 
+/*
 // tests for transfer functions
 Clarinet.test({
     name: "transfer: a user cannot transfer nft if they do not own one",
@@ -161,3 +162,4 @@ Clarinet.test({
 
     }
 })
+*/

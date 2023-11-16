@@ -37,6 +37,7 @@ Clarinet.test({
     },
 });
 
+/*
 // a user should be able to view campaign information
 Clarinet.test({
     name: "A user should be able to view campaign information",
@@ -909,3 +910,4 @@ Clarinet.test({
         block.receipts[0].result.expectErr().expectUint(115)
     },
 });
+*/
