@@ -37,7 +37,7 @@ Clarinet.test({
     },
 });
 
-/*
+
 // a user should be able to view campaign information
 Clarinet.test({
     name: "A user should be able to view campaign information",
@@ -52,16 +52,17 @@ Clarinet.test({
         const newCampaign = chain.callReadOnlyFn(
             'clearfund',
             'get-campaign',
-            [types.uint(1)],
+            [types.uint(0)],
             wallet_1
         );
 
         const expectedCampaign = newCampaign.result;
         expectedCampaign.expectOk();
-        assertEquals(expectedCampaign, '(ok {campaignOwner: ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5, claimed: false, description: 0x5468697320697320612063616d706169676e20746861742049206d6164652e, endsAt: u100, fundGoal: u10000, link: u"https://example.com", pledgedAmount: u0, pledgedCount: u0, startsAt: u2, targetReached: false, targetReachedBy: u0, title: u"Test Campaign"})');
+        const expectedResult = '(ok {campaignOwner: ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5, claimed: false, description: 0x5468697320697320612063616d706169676e20746861742049206d6164652e, endsAt: u100, fundGoal: u10000, link: u"https://example.com", pledgedAmount: u0, pledgedCount: u0, startsAt: u2, targetReached: false, targetReachedBy: u0, title: u"Test Campaign"})'
+        assertEquals(expectedCampaign, expectedResult);
     },
 });
-
+/*
 // a user should not be able to launch a campaign with a fundGoal of 0
 Clarinet.test({
     name: "a user should not be able to launch a campaign without a fundGoal",

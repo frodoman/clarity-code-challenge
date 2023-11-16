@@ -40,17 +40,6 @@
 
 (define-map Investments {contributor: principal, campaignId: uint} {amount: uint})
 
-;; get-campaign
-;; view campaign information
-(define-read-only (get-campaign (user-principal principal) (campaignId uint)) 
-    (let 
-        (
-            (investment-id {contributor: user-principal, campaignId: campaignId})
-        )
-        (map-get? Investments investment-id)
-    )
-)
-
 ;; launch
 ;; [types.utf8('Test Campaign'), types.buff('This is a campaign that I made.'), 
 ;; types.utf8('https://example.com'), types.uint(10000), types.uint(2), types.uint(100)]
@@ -82,5 +71,15 @@
 
         (var-set last-id next-id)
         (ok next-id)
+    )
+)
+
+;; get-campaign
+(define-read-only (get-campaign (campaign-id uint))
+    (ok 
+        (unwrap! 
+            (map-get? Campaigns campaign-id) 
+            ERR_ID_NOT_FOUND
+        )
     )
 )
