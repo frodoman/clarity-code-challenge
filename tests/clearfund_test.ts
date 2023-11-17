@@ -137,7 +137,7 @@ Clarinet.test({
         result.expectErr().expectUint(104);
     },
 });
-/*
+
 // a user should not be able to launch a campaign ending more than 12960 blocks in the future
 Clarinet.test({
     name: "a user should not be able to launch a campaign ending more than 12960 blocks in the future",
@@ -152,7 +152,7 @@ Clarinet.test({
         result.expectErr().expectUint(104);
     },
 });
-
+/*
 // CANCELING A CAMPAIGN
 // a campign owner should be able to cancel a campaign before it starts
 Clarinet.test({

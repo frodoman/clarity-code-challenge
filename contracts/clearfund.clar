@@ -58,6 +58,7 @@
         (asserts! (> goal u0) ERR_INVALID_FUND_GOAL)
         (asserts! (>= begin-with block-height) ERR_START_NOT_VALID)
         (asserts! (>= end-at block-height) ERR_END_NOT_VALID)
+        (asserts! (>= FUNDING_TIME_LIMIT (- end-at begin-with)) ERR_END_NOT_VALID)
         (asserts! 
             (not 
                 (or (is-eq title u"") (is-eq link u"") (is-eq desp 0x0000))
