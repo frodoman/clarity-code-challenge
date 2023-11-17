@@ -55,6 +55,16 @@
             (next-id (+ current-id u1))
         )   
 
+        (asserts! (> goal u0) ERR_INVALID_FUND_GOAL)
+        (asserts! (>= begin-with block-height) ERR_START_NOT_VALID)
+        (asserts! (>= end-at block-height) ERR_END_NOT_VALID)
+        (asserts! 
+            (not 
+                (or (is-eq title u"") (is-eq link u"") (is-eq desp 0x0000))
+            )
+            ERR_TITLE_DESCRIPTION_LINK_EMPTY 
+        )
+
         (map-set Campaigns current-id {
             title: title,
             description: desp, 

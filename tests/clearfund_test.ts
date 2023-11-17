@@ -58,11 +58,11 @@ Clarinet.test({
 
         const expectedCampaign = newCampaign.result;
         expectedCampaign.expectOk();
-        const expectedResult = '(ok {campaignOwner: ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5, claimed: false, description: 0x5468697320697320612063616d706169676e20746861742049206d6164652e, endsAt: u100, fundGoal: u10000, link: u"https://example.com", pledgedAmount: u0, pledgedCount: u0, startsAt: u2, targetReached: false, targetReachedBy: u0, title: u"Test Campaign"})'
+        const expectedResult = '(ok {campaignOwner: ' + wallet_1 + ', claimed: false, description: 0x5468697320697320612063616d706169676e20746861742049206d6164652e, endsAt: u100, fundGoal: u10000, link: u"https://example.com", pledgedAmount: u0, pledgedCount: u0, startsAt: u2, targetReached: false, targetReachedBy: u0, title: u"Test Campaign"})'
         assertEquals(expectedCampaign, expectedResult);
     },
 });
-/*
+
 // a user should not be able to launch a campaign with a fundGoal of 0
 Clarinet.test({
     name: "a user should not be able to launch a campaign without a fundGoal",
@@ -78,6 +78,7 @@ Clarinet.test({
     },
 });
 
+
 // a user should not be able to launch a campaign without a title, description, or link
 Clarinet.test({
     name: "a user should not be able to launch a campaign without a title, description, or link",
@@ -91,6 +92,7 @@ Clarinet.test({
         const result = block.receipts[0].result;
         result.expectErr().expectUint(101);
 
+        
         let block2 = chain.mineBlock([
             Tx.contractCall('clearfund', 'launch', [types.utf8('Name'), types.buff(''), types.utf8('https://example.com'), types.uint(10000), types.uint(2), types.uint(100)], wallet_1)
         ]);
@@ -120,6 +122,7 @@ Clarinet.test({
     },
 });
 
+
 // a user should not be able to launch a campaign ending sooner than current block
 Clarinet.test({
     name: "a user should not be able to launch a campaign ending sooner than current block",
@@ -134,7 +137,7 @@ Clarinet.test({
         result.expectErr().expectUint(104);
     },
 });
-
+/*
 // a user should not be able to launch a campaign ending more than 12960 blocks in the future
 Clarinet.test({
     name: "a user should not be able to launch a campaign ending more than 12960 blocks in the future",
