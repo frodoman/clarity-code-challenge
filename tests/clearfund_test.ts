@@ -152,7 +152,7 @@ Clarinet.test({
         result.expectErr().expectUint(104);
     },
 });
-/*
+
 // CANCELING A CAMPAIGN
 // a campign owner should be able to cancel a campaign before it starts
 Clarinet.test({
@@ -182,7 +182,7 @@ Clarinet.test({
         assertEquals(newCampaign.result, '(err u105)');
     },
 });
-
+/*
 // a campaign owner should not be able to cancel a campaign after it starts
 Clarinet.test({
     name: "a campaign owner should not be able to cancel a campaign after it starts",

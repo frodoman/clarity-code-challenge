@@ -94,3 +94,15 @@
         )
     )
 )
+
+;; cancel 
+;; Cancel a campaign 
+(define-public (cancel (campaign-id uint)) 
+    (let 
+        (
+            (current-campaign (get-campaign campaign-id))
+        ) 
+        (asserts! (>= campaign-id u0) ERR_ID_NOT_FOUND)
+        (ok (map-delete Campaigns campaign-id))
+    )
+)
