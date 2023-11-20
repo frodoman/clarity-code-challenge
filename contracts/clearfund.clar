@@ -47,7 +47,7 @@
                        (desp (buff 33)) 
                        (link (string-utf8 256))
                        (goal uint)
-                       (begin-with uint)
+                       (begin-block uint)
                        (end-at uint)) 
     (let 
         (
@@ -56,9 +56,9 @@
         )   
 
         (asserts! (> goal u0) ERR_INVALID_FUND_GOAL)
-        (asserts! (>= begin-with block-height) ERR_START_NOT_VALID)
+        (asserts! (>= begin-block block-height) ERR_START_NOT_VALID)
         (asserts! (>= end-at block-height) ERR_END_NOT_VALID)
-        (asserts! (>= FUNDING_TIME_LIMIT (- end-at begin-with)) ERR_END_NOT_VALID)
+        (asserts! (>= FUNDING_TIME_LIMIT (- end-at begin-block)) ERR_END_NOT_VALID)
         (asserts! 
             (not 
                 (or (is-eq title u"") (is-eq link u"") (is-eq desp 0x0000))
@@ -71,7 +71,7 @@
             description: desp, 
             link: link,
             fundGoal: goal,
-            startsAt: begin-with,
+            startsAt: begin-block,
             endsAt: end-at, 
             campaignOwner: tx-sender,
             pledgedCount: u0,
@@ -100,9 +100,15 @@
 (define-public (cancel (campaign-id uint)) 
     (let 
         (
-            (current-campaign (get-campaign campaign-id))
+            (current-campaign (unwrap! (get-campaign campaign-id) ERR_ID_NOT_FOUND))
+            (started-block (get startsAt current-campaign))
+            (campaign-owner (get campaignOwner current-campaign))
         ) 
-        (asserts! (>= campaign-id u0) ERR_ID_NOT_FOUND)
+        ;; can't cancel after it started
+        (asserts! (< block-height started-block) ERR_CANNOT_CANCEL)
+        (asserts! (is-eq campaign-owner tx-sender) ERR_NOT_OWNER)
+
         (ok (map-delete Campaigns campaign-id))
     )
 )
+

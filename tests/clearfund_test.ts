@@ -162,27 +162,27 @@ Clarinet.test({
         const wallet_1 = accounts.get("wallet_1")!.address
 
         let block = chain.mineBlock([
-            Tx.contractCall('clearfund', 'launch', [types.utf8('Test Campaign'), types.buff('This is a campaign that I made.'), types.utf8('https://example.com'), types.uint(10000), types.uint(5), types.uint(100)], wallet_1)
+            Tx.contractCall('clearfund', 'launch', [types.utf8('Test Campaign'), types.buff('This is a campaign that I made.'), types.utf8('https://example.com'), types.uint(10000), types.uint(5), types.uint(100)], wallet_1),
         ]);
 
         let block2 = chain.mineBlock([
-            Tx.contractCall('clearfund', 'cancel', [types.uint(1)], wallet_1)
+            Tx.contractCall('clearfund', 'cancel', [types.uint(0)], wallet_1)
         ])
 
         const cancelledCampaign = block2.receipts[0].result;
         cancelledCampaign.expectOk();
-
+        
         const newCampaign = chain.callReadOnlyFn(
             'clearfund',
             'get-campaign',
-            [types.uint(1)],
+            [types.uint(0)],
             wallet_1
         );
 
         assertEquals(newCampaign.result, '(err u105)');
     },
 });
-/*
+
 // a campaign owner should not be able to cancel a campaign after it starts
 Clarinet.test({
     name: "a campaign owner should not be able to cancel a campaign after it starts",
@@ -226,6 +226,7 @@ Clarinet.test({
     },
 });
 
+/*
 // UPDATING A CAMPAIGN
 // a campaign owner should be able to update the title, description, and link of a campaign
 Clarinet.test({
