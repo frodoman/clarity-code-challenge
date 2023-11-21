@@ -122,7 +122,12 @@
     (let 
         (
             (found-campaign (unwrap! (get-campaign campaign-id) ERR_ID_NOT_FOUND ))
+            (campaign-owner (get campaignOwner found-campaign))
+            (end-block (get endsAt found-campaign))
         )
+
+        (asserts! (is-eq tx-sender campaign-owner) ERR_NOT_OWNER)
+        (asserts! (< block-height end-block) ERR_ENDED)
 
         (ok
             (map-set Campaigns campaign-id {

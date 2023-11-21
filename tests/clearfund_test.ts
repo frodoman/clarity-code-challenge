@@ -261,7 +261,7 @@ Clarinet.test({
         assertEquals(expectedCampaign, expectedResult);
     },
 });
-/*
+
 // a user who does not own a campaign should not be able to update any information
 Clarinet.test({
     name: "a user who does not own a campaign should not be able to update any information",
@@ -308,7 +308,7 @@ Clarinet.test({
         expectedCampaign.expectErr();
     },
 });
-
+/*
 // CLAIMING CAMPAIGN FUNDS
 // a campaign owner should be able to collect funds after the funding goal has been reached
 Clarinet.test({
