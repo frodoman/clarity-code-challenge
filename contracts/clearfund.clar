@@ -112,3 +112,34 @@
     )
 )
 
+;; update 
+;; update the title, description and link 
+;; Tx.contractCall('clearfund', 'update', [types.uint(1), types.utf8("New Title"), types.buff("New description"), types.utf8("https://newexample.org")], wallet_1)
+ (define-public (update (campaign-id uint)
+                        (title (string-utf8 256))
+                        (desp (buff 33))
+                        (link (string-utf8 256)))
+    (let 
+        (
+            (found-campaign (unwrap! (get-campaign campaign-id) ERR_ID_NOT_FOUND ))
+        )
+
+        (ok
+            (map-set Campaigns campaign-id {
+                title: title,
+                description: desp, 
+                link: link,
+                fundGoal: (get fundGoal found-campaign),
+                startsAt: (get startsAt found-campaign),
+                endsAt: (get endsAt found-campaign), 
+                campaignOwner: (get campaignOwner found-campaign),
+                pledgedCount: (get pledgedCount found-campaign),
+                pledgedAmount: (get pledgedAmount found-campaign),
+                claimed: (get claimed found-campaign),
+                targetReached: (get targetReached found-campaign),
+                targetReachedBy: (get targetReachedBy found-campaign) 
+            })
+        )
+    )
+    
+ )

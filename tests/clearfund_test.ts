@@ -226,7 +226,7 @@ Clarinet.test({
     },
 });
 
-/*
+
 // UPDATING A CAMPAIGN
 // a campaign owner should be able to update the title, description, and link of a campaign
 Clarinet.test({
@@ -242,23 +242,26 @@ Clarinet.test({
         chain.mineEmptyBlockUntil(5)
 
         let block2 = chain.mineBlock([
-            Tx.contractCall('clearfund', 'update', [types.uint(1), types.utf8("New Title"), types.buff("New description"), types.utf8("https://newexample.org")], wallet_1)
+            Tx.contractCall('clearfund', 'update', [types.uint(0), types.utf8("New Title"), types.buff("New description"), types.utf8("https://newexample.org")], wallet_1)
         ])
 
         const updatedCampaign = chain.callReadOnlyFn(
             'clearfund',
             'get-campaign',
-            [types.uint(1)],
+            [types.uint(0)],
             wallet_1
         );
 
         const expectedCampaign = updatedCampaign.result;
         console.log(expectedCampaign)
         expectedCampaign.expectOk();
-        assertEquals(expectedCampaign, '(ok {campaignOwner: ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5, claimed: false, description: 0x4e6577206465736372697074696f6e, endsAt: u100, fundGoal: u10000, link: u"https://newexample.org", pledgedAmount: u0, pledgedCount: u0, startsAt: u2, targetReached: false, targetReachedBy: u0, title: u"New Title"})');
+
+        const expectedResult = '(ok {campaignOwner: '+ wallet_1 +', claimed: false, description: ' + types.buff("New description") + ', endsAt: u100, fundGoal: u10000, link: u"https://newexample.org", pledgedAmount: u0, pledgedCount: u0, startsAt: u2, targetReached: false, targetReachedBy: u0, title: u"New Title"})';
+
+        assertEquals(expectedCampaign, expectedResult);
     },
 });
-
+/*
 // a user who does not own a campaign should not be able to update any information
 Clarinet.test({
     name: "a user who does not own a campaign should not be able to update any information",
