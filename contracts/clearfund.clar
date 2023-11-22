@@ -188,11 +188,13 @@
             (campaign-owner (get campaignOwner found-campaign))
             (current-pledged (get pledgedAmount found-campaign))
             (target-reached (get targetReached found-campaign))
+            (already-claimed (get claimed found-campaign))
         )
 
         ;; assert sender is the campaign owner 
         (asserts! (is-eq tx-sender campaign-owner) ERR_NOT_OWNER)
         (asserts! target-reached ERR_GOAL_NOT_MET)
+        (asserts! (not already-claimed) ERR_ALREADY_CLAIMED)
 
         (asserts! (> current-pledged u0) ERR_NOT_ENOUGH_BALANCE)
 

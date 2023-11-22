@@ -24,7 +24,7 @@ function setup() {
 // LAUNCHING A CAMPAIGN
 // a user should be able to launch a new campaign
 Clarinet.test({
-    name: "A user should be able to launch a new campaign",
+    name: "001: A user should be able to launch a new campaign",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -40,7 +40,7 @@ Clarinet.test({
 
 // a user should be able to view campaign information
 Clarinet.test({
-    name: "A user should be able to view campaign information",
+    name: "002: A user should be able to view campaign information",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -65,7 +65,7 @@ Clarinet.test({
 
 // a user should not be able to launch a campaign with a fundGoal of 0
 Clarinet.test({
-    name: "a user should not be able to launch a campaign without a fundGoal",
+    name: "003: a user should not be able to launch a campaign without a fundGoal",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -81,7 +81,7 @@ Clarinet.test({
 
 // a user should not be able to launch a campaign without a title, description, or link
 Clarinet.test({
-    name: "a user should not be able to launch a campaign without a title, description, or link",
+    name: "004: a user should not be able to launch a campaign without a title, description, or link",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -109,7 +109,7 @@ Clarinet.test({
 
 // a user should not be able to launch a campaign starting sooner than current block
 Clarinet.test({
-    name: "a user should not be able to launch a campaign starting sooner than current block",
+    name: "005: a user should not be able to launch a campaign starting sooner than current block",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -125,7 +125,7 @@ Clarinet.test({
 
 // a user should not be able to launch a campaign ending sooner than current block
 Clarinet.test({
-    name: "a user should not be able to launch a campaign ending sooner than current block",
+    name: "006: a user should not be able to launch a campaign ending sooner than current block",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -140,7 +140,7 @@ Clarinet.test({
 
 // a user should not be able to launch a campaign ending more than 12960 blocks in the future
 Clarinet.test({
-    name: "a user should not be able to launch a campaign ending more than 12960 blocks in the future",
+    name: "007: a user should not be able to launch a campaign ending more than 12960 blocks in the future",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -156,7 +156,7 @@ Clarinet.test({
 // CANCELING A CAMPAIGN
 // a campign owner should be able to cancel a campaign before it starts
 Clarinet.test({
-    name: "a campign owner should be able to cancel a campaign before it starts",
+    name: "008: a campign owner should be able to cancel a campaign before it starts",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -185,7 +185,7 @@ Clarinet.test({
 
 // a campaign owner should not be able to cancel a campaign after it starts
 Clarinet.test({
-    name: "a campaign owner should not be able to cancel a campaign after it starts",
+    name: "009: a campaign owner should not be able to cancel a campaign after it starts",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -207,7 +207,7 @@ Clarinet.test({
 
 // a user who does not own a campaign should not be able to cancel it
 Clarinet.test({
-    name: "a user who does not own a campaign should not be able to cancel it",
+    name: "010: a user who does not own a campaign should not be able to cancel it",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -230,7 +230,7 @@ Clarinet.test({
 // UPDATING A CAMPAIGN
 // a campaign owner should be able to update the title, description, and link of a campaign
 Clarinet.test({
-    name: "a campaign owner should be able to update the title, description, and link of a campaign",
+    name: "011: a campaign owner should be able to update the title, description, and link of a campaign",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -253,7 +253,6 @@ Clarinet.test({
         );
 
         const expectedCampaign = updatedCampaign.result;
-        console.log(expectedCampaign)
         expectedCampaign.expectOk();
 
         const expectedResult = '(ok {campaignOwner: '+ wallet_1 +', claimed: false, description: ' + types.buff("New description") + ', endsAt: u100, fundGoal: u10000, link: u"https://newexample.org", pledgedAmount: u0, pledgedCount: u0, startsAt: u2, targetReached: false, targetReachedBy: u0, title: u"New Title"})';
@@ -264,7 +263,7 @@ Clarinet.test({
 
 // a user who does not own a campaign should not be able to update any information
 Clarinet.test({
-    name: "a user who does not own a campaign should not be able to update any information",
+    name: "012: a user who does not own a campaign should not be able to update any information",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -288,7 +287,7 @@ Clarinet.test({
 
 // a campaign owner should not be able to update a campaign after it has ended
 Clarinet.test({
-    name: "a campaign owner should not be able to update a campaign after it has ended",
+    name: "013: a campaign owner should not be able to update a campaign after it has ended",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -312,7 +311,7 @@ Clarinet.test({
 // PLEDGE CAMPAIGN FUNDS
 // a campaign should be updated after fund has been pledged
 Clarinet.test({
-    name: "a campaign should be updated after fund has been pledged",
+    name: "014: a campaign should be updated after fund has been pledged",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -347,7 +346,7 @@ Clarinet.test({
 // CLAIMING CAMPAIGN FUNDS
 // a campaign owner should be able to collect funds after the funding goal has been reached
 Clarinet.test({
-    name: "a campaign owner should be able to collect funds after the funding goal has been reached",
+    name: "015: a campaign owner should be able to collect funds after the funding goal has been reached",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -380,13 +379,16 @@ Clarinet.test({
 
         const expectedCampaign = claimedCampaign.result;
         expectedCampaign.expectOk();
-        assertEquals(expectedCampaign, '(ok {campaignOwner: ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5, claimed: true, description: 0x5468697320697320612063616d706169676e20746861742049206d6164652e, endsAt: u100, fundGoal: u10000, link: u"https://example.com", pledgedAmount: u20000, pledgedCount: u1, startsAt: u2, targetReached: true, targetReachedBy: u5, title: u"Test Campaign"})');
+
+        const expectedResult = '(ok {campaignOwner: '+ wallet_1 + ', claimed: true, description: 0x5468697320697320612063616d706169676e20746861742049206d6164652e, endsAt: u100, fundGoal: u10000, link: u"https://example.com", pledgedAmount: u20000, pledgedCount: u1, startsAt: u2, targetReached: true, targetReachedBy: u5, title: u"Test Campaign"})';
+    
+        assertEquals(expectedCampaign, expectedResult);
     },
 });
-/*
+
 // a campaign owner should not be able to collect funds before funding goal has been reached
 Clarinet.test({
-    name: "a campaign owner should not be able to collect funds before funding goal has been reached",
+    name: "016: a campaign owner should not be able to collect funds before funding goal has been reached",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -398,7 +400,7 @@ Clarinet.test({
         chain.mineEmptyBlockUntil(5)
 
         let block2 = chain.mineBlock([
-            Tx.contractCall('clearfund', 'claim', [types.uint(1)], wallet_1)
+            Tx.contractCall('clearfund', 'claim', [types.uint(0)], wallet_1)
         ])
 
         const claimedCampaignBlock = block2.receipts[0].result
@@ -408,19 +410,22 @@ Clarinet.test({
         const claimedCampaign = chain.callReadOnlyFn(
             'clearfund',
             'get-campaign',
-            [types.uint(1)],
+            [types.uint(0)],
             wallet_1
         );
 
         const expectedCampaign = claimedCampaign.result;
         expectedCampaign.expectOk();
-        assertEquals(expectedCampaign, '(ok {campaignOwner: ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5, claimed: false, description: 0x5468697320697320612063616d706169676e20746861742049206d6164652e, endsAt: u100, fundGoal: u10000, link: u"https://example.com", pledgedAmount: u0, pledgedCount: u0, startsAt: u2, targetReached: false, targetReachedBy: u0, title: u"Test Campaign"})');
-    },
+        const expectedResult = '(ok {campaignOwner: '+ wallet_1 + ', claimed: false, description: 0x5468697320697320612063616d706169676e20746861742049206d6164652e, endsAt: u100, fundGoal: u10000, link: u"https://example.com", pledgedAmount: u0, pledgedCount: u0, startsAt: u2, targetReached: false, targetReachedBy: u0, title: u"Test Campaign"})';
+
+        assertEquals(expectedCampaign, expectedResult);
+
+  },
 });
 
 // a campaign owner should not be able to claim funds twice
 Clarinet.test({
-    name: "a campaign owner should not be able to claim funds twice",
+    name: "017: a campaign owner should not be able to claim funds twice",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -433,11 +438,11 @@ Clarinet.test({
         chain.mineEmptyBlockUntil(5)
 
         let block2 = chain.mineBlock([
-            Tx.contractCall('clearfund', 'pledge', [types.uint(1), types.uint(20000)], wallet_2)
+            Tx.contractCall('clearfund', 'pledge', [types.uint(0), types.uint(20000)], wallet_2)
         ])
 
         let block3 = chain.mineBlock([
-            Tx.contractCall('clearfund', 'claim', [types.uint(1)], wallet_1)
+            Tx.contractCall('clearfund', 'claim', [types.uint(0)], wallet_1)
         ])
 
         const claimedCampaignBlock = block3.receipts[0].result
@@ -447,16 +452,15 @@ Clarinet.test({
         const claimedCampaign = chain.callReadOnlyFn(
             'clearfund',
             'get-campaign',
-            [types.uint(1)],
+            [types.uint(0)],
             wallet_1
         );
 
         const expectedCampaign = claimedCampaign.result;
         expectedCampaign.expectOk();
-        assertEquals(expectedCampaign, '(ok {campaignOwner: ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5, claimed: true, description: 0x5468697320697320612063616d706169676e20746861742049206d6164652e, endsAt: u100, fundGoal: u10000, link: u"https://example.com", pledgedAmount: u20000, pledgedCount: u1, startsAt: u2, targetReached: true, targetReachedBy: u6, title: u"Test Campaign"})');
-
+ 
         let block4 = chain.mineBlock([
-            Tx.contractCall('clearfund', 'claim', [types.uint(1)], wallet_1)
+            Tx.contractCall('clearfund', 'claim', [types.uint(0)], wallet_1)
         ])
 
         const failedClaim = block4.receipts[0].result;
@@ -467,7 +471,7 @@ Clarinet.test({
 
 // a user who does not own a campaign should not be able to claim funds
 Clarinet.test({
-    name: "a user who does not own a campaign should not be able to claim funds",
+    name: "018: a user who does not own a campaign should not be able to claim funds",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -480,11 +484,11 @@ Clarinet.test({
         chain.mineEmptyBlockUntil(5)
 
         let block2 = chain.mineBlock([
-            Tx.contractCall('clearfund', 'pledge', [types.uint(1), types.uint(20000)], wallet_2)
+            Tx.contractCall('clearfund', 'pledge', [types.uint(0), types.uint(20000)], wallet_2)
         ])
 
         let block3 = chain.mineBlock([
-            Tx.contractCall('clearfund', 'claim', [types.uint(1)], wallet_2)
+            Tx.contractCall('clearfund', 'claim', [types.uint(0)], wallet_2)
         ])
 
         const claimedCampaign = block3.receipts[0].result
@@ -493,10 +497,10 @@ Clarinet.test({
         assertEquals(claimedCampaign, '(err u107)');
     },
 });
-
+/*
 // PLEDGING TO A CAMPAIGN
 Clarinet.test({
-    name: "pledge: a user should be able to invest in a campaign that is active",
+    name: "019: pledge: a user should be able to invest in a campaign that is active",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
