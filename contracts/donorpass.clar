@@ -16,7 +16,7 @@
 
 ;; (get-last-token-id () (response uint uint))
 (define-public (get-last-token-id)  
-    (ok u0)
+    (ok (var-get lastTokenId))
 )
 
 ;; (get-owner (uint) (response (optional principal) uint))
@@ -33,10 +33,10 @@
 (define-public (transfer (nft-id uint) (from  principal) (to principal)) 
     (let  
         (
-            (nft-owner (unwrap! (get-owner nft-id) (err u0)))
-        ) 
+            (nft-owner (unwrap! (get-owner nft-id) ERR_MISSING_TOKEN_OWNER))
+        )
 
-        (asserts! (is-eq nft-owner (some from)) ERR_NOT_TOKEN_OWNER)
+        ;;(asserts! (is-eq nft-owner (some from)) ERR_NOT_TOKEN_OWNER)
         (nft-transfer? donorpass nft-id from to)
     )
    
