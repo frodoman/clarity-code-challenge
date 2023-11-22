@@ -131,21 +131,24 @@
         (asserts! (is-eq tx-sender campaign-owner) ERR_NOT_OWNER)
         (asserts! (< block-height end-block) ERR_ENDED)
 
-        (ok
-            (map-set Campaigns campaign-id {
-                title: title,
-                description: desp, 
-                link: link,
-                fundGoal: (get fundGoal found-campaign),
-                startsAt: (get startsAt found-campaign),
-                endsAt: (get endsAt found-campaign), 
-                campaignOwner: (get campaignOwner found-campaign),
-                pledgedCount: (get pledgedCount found-campaign),
-                pledgedAmount: (get pledgedAmount found-campaign),
-                claimed: (get claimed found-campaign),
-                targetReached: (get targetReached found-campaign),
-                targetReachedBy: (get targetReachedBy found-campaign) 
-            })
+        (asserts! 
+            (not 
+                (or (is-eq title u"") (is-eq link u"") (is-eq desp 0x0000))
+            )
+            ERR_TITLE_DESCRIPTION_LINK_EMPTY 
+        )
+
+        (ok 
+            (map-set Campaigns campaign-id 
+                (merge 
+                    found-campaign
+                    {
+                        title: title,
+                        description: desp, 
+                        link: link
+                    }
+                )
+            )
         )
     )  
  )
@@ -157,10 +160,6 @@
             (found-campaign (unwrap! (get-campaign campaign-id) ERR_ID_NOT_FOUND ))
             (end-blcok (get endsAt found-campaign))
             (did-claimed (get claimed found-campaign))
-            ;;(current-pledged-count (get pledgedCount found-campaign))
-            ;;(current-pledged-amount (get pledgedAmount found-campaign))
-            ;;(current-goal (get fundGoal found-campaign))
-            ;;(new-pledged-amount (+ current-pledged-amount amount))
         )
 
         ;; assert campaign is not finished 
