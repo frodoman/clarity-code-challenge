@@ -308,6 +308,41 @@ Clarinet.test({
         expectedCampaign.expectErr();
     },
 });
+
+// PLEDGE CAMPAIGN FUNDS
+// a campaign should be updated after fund has been pledged
+Clarinet.test({
+    name: "a campaign should be updated after fund has been pledged",
+    async fn(chain: Chain, accounts: Map<string, Account>) {
+
+        const wallet_1 = accounts.get("wallet_1")!.address
+        const wallet_2 = accounts.get("wallet_2")!.address
+
+        let block = chain.mineBlock([
+            Tx.contractCall('clearfund', 'launch', [types.utf8('Test Campaign'), types.buff('This is a campaign that I made.'), types.utf8('https://example.com'), types.uint(10000), types.uint(2), types.uint(100)], wallet_1)
+        ]);
+
+        chain.mineEmptyBlockUntil(5)
+
+        let block2 = chain.mineBlock([
+            Tx.contractCall('clearfund', 'pledge', [types.uint(0), types.uint(20000)], wallet_2)
+        ])
+
+        const claimedCampaign = chain.callReadOnlyFn(
+            'clearfund',
+            'get-campaign',
+            [types.uint(0)],
+            wallet_1
+        );
+
+        const expectedCampaign = claimedCampaign.result;
+        expectedCampaign.expectOk();
+
+        const expectedResult = '(ok {campaignOwner: ' + wallet_1 + ', claimed: false, description: 0x5468697320697320612063616d706169676e20746861742049206d6164652e, endsAt: u100, fundGoal: u10000, link: u"https://example.com", pledgedAmount: u20000, pledgedCount: u1, startsAt: u2, targetReached: true, targetReachedBy: u5, title: u"Test Campaign"})';
+ 
+        assertEquals(expectedCampaign, expectedResult)},
+});
+
 /*
 // CLAIMING CAMPAIGN FUNDS
 // a campaign owner should be able to collect funds after the funding goal has been reached
@@ -325,11 +360,11 @@ Clarinet.test({
         chain.mineEmptyBlockUntil(5)
 
         let block2 = chain.mineBlock([
-            Tx.contractCall('clearfund', 'pledge', [types.uint(1), types.uint(20000)], wallet_2)
+            Tx.contractCall('clearfund', 'pledge', [types.uint(0), types.uint(20000)], wallet_2)
         ])
 
         let block3 = chain.mineBlock([
-            Tx.contractCall('clearfund', 'claim', [types.uint(1)], wallet_1)
+            Tx.contractCall('clearfund', 'claim', [types.uint(0)], wallet_1)
         ])
 
         const claimedCampaignBlock = block3.receipts[0].result
@@ -339,7 +374,7 @@ Clarinet.test({
         const claimedCampaign = chain.callReadOnlyFn(
             'clearfund',
             'get-campaign',
-            [types.uint(1)],
+            [types.uint(0)],
             wallet_1
         );
 

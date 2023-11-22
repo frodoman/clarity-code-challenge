@@ -17,6 +17,7 @@
 (define-constant ERR_GOAL_NOT_MET (err u115))
 (define-constant ERR_ALREADY_CLAIMED (err u116))
 (define-constant ERR_TARGET_NOT_REACHED (err u117))
+(define-constant ERR_NOT_ENOUGH_BALANCE (err u118))
 
 ;; calculate roughly 90 days based on block times of 10 minutes
 (define-constant FUNDING_TIME_LIMIT u12960)
@@ -145,6 +146,115 @@
                 targetReachedBy: (get targetReachedBy found-campaign) 
             })
         )
-    )
-    
+    )  
  )
+
+(define-public (pledge (campaign-id uint) (amount uint))
+    
+    (let 
+        (
+            (found-campaign (unwrap! (get-campaign campaign-id) ERR_ID_NOT_FOUND ))
+            (end-blcok (get endsAt found-campaign))
+            (did-claimed (get claimed found-campaign))
+            (current-pledged-count (get pledgedCount found-campaign))
+            (current-pledged-amount (get pledgedAmount found-campaign))
+            (current-goal (get fundGoal found-campaign))
+            (new-pledged-amount (+ current-pledged-amount amount))
+        )
+
+        ;; assert campaign is not finished 
+        (asserts! (not (is-campaign-finished end-blcok)) ERR_ENDED)
+
+        ;; assert campaign is not been claimed 
+        (asserts! (is-eq did-claimed false) ERR_ALREADY_CLAIMED)
+
+        ;; assert sender has enough balance 
+        (asserts! ( > (stx-get-balance tx-sender) amount) ERR_NOT_ENOUGH_BALANCE)
+
+        ;; stx-transfer to contract 
+        (try! (stx-transfer? amount tx-sender CONTRACT_ADDRESS))
+
+        ;; update campaign map
+        (update-campaign-after-pledged campaign-id amount)
+    )
+)
+
+(define-public (claim (campaign-id uint)) 
+
+    (let  
+        (
+            (found-campaign (unwrap! (get-campaign campaign-id) ERR_ID_NOT_FOUND ))
+            (campaign-owner (get campaignOwner found-campaign))
+            (current-pledged (get pledgedAmount found-campaign))
+        )
+
+        ;; assert sender is the campaign owner 
+        (asserts! (is-eq tx-sender campaign-owner) ERR_NOT_OWNER)
+
+        ;;(asserts! (> current-pledged u0) ERR_NOT_ENOUGH_BALANCE)
+
+        ;; stx transfer to campaign owner 
+        (try! (stx-transfer? current-pledged CONTRACT_ADDRESS tx-sender))
+
+        ;; update map record for the campaign 
+
+        (ok 
+            (map-set Campaigns campaign-id 
+                (merge 
+                    {
+                        claimed: true
+                    }
+                    found-campaign
+                )
+            )
+        )
+    )
+)
+
+(define-private (is-campaign-finished (end-at-block uint )) 
+
+    (if 
+        ( < end-at-block block-height) 
+        true 
+        false
+    )
+)
+
+(define-private (update-campaign-after-pledged (campaign-id uint) (pledge-amount uint)) 
+    (let 
+        (
+            (found-campaign (unwrap! (get-campaign campaign-id) ERR_ID_NOT_FOUND ))
+            (current-pledged-count (get pledgedCount found-campaign))
+            (current-pledged-amount (get pledgedAmount found-campaign))
+            (current-goal (get fundGoal found-campaign))
+            (new-pledged-amount (+ current-pledged-amount pledge-amount))
+        )
+
+        (ok 
+            (map-set Campaigns campaign-id 
+                (if (>= new-pledged-amount current-goal)
+                ;; funding goal reached
+                    (merge 
+                        found-campaign
+                        {
+                            pledgedCount: (+ current-pledged-count u1), 
+                            pledgedAmount: new-pledged-amount,
+                            targetReached: true,
+                            targetReachedBy: block-height
+                        } 
+                    )
+                    
+                    ;; funding goal not reached
+                    (merge 
+                        found-campaign
+                        {
+                            pledgedCount: (+ current-pledged-count u1), 
+                            pledgedAmount: new-pledged-amount
+                        } 
+                        
+                    )
+                )
+            )
+        )
+    )
+)
