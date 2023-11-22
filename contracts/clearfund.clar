@@ -1,4 +1,5 @@
 (define-constant CONTRACT_ADDRESS (as-contract tx-sender))
+(define-constant DEPLOYER tx-sender)
 
 (define-constant ERR_TITLE_DESCRIPTION_LINK_EMPTY (err u101))
 (define-constant ERR_INVALID_FUND_GOAL (err u102))
@@ -156,10 +157,10 @@
             (found-campaign (unwrap! (get-campaign campaign-id) ERR_ID_NOT_FOUND ))
             (end-blcok (get endsAt found-campaign))
             (did-claimed (get claimed found-campaign))
-            (current-pledged-count (get pledgedCount found-campaign))
-            (current-pledged-amount (get pledgedAmount found-campaign))
-            (current-goal (get fundGoal found-campaign))
-            (new-pledged-amount (+ current-pledged-amount amount))
+            ;;(current-pledged-count (get pledgedCount found-campaign))
+            ;;(current-pledged-amount (get pledgedAmount found-campaign))
+            ;;(current-goal (get fundGoal found-campaign))
+            ;;(new-pledged-amount (+ current-pledged-amount amount))
         )
 
         ;; assert campaign is not finished 
@@ -186,25 +187,27 @@
             (found-campaign (unwrap! (get-campaign campaign-id) ERR_ID_NOT_FOUND ))
             (campaign-owner (get campaignOwner found-campaign))
             (current-pledged (get pledgedAmount found-campaign))
+            (target-reached (get targetReached found-campaign))
         )
 
         ;; assert sender is the campaign owner 
         (asserts! (is-eq tx-sender campaign-owner) ERR_NOT_OWNER)
+        (asserts! target-reached ERR_GOAL_NOT_MET)
 
-        ;;(asserts! (> current-pledged u0) ERR_NOT_ENOUGH_BALANCE)
+        (asserts! (> current-pledged u0) ERR_NOT_ENOUGH_BALANCE)
 
         ;; stx transfer to campaign owner 
-        (try! (stx-transfer? current-pledged CONTRACT_ADDRESS tx-sender))
+        (try! (as-contract (stx-transfer? current-pledged CONTRACT_ADDRESS campaign-owner)))
 
         ;; update map record for the campaign 
 
         (ok 
             (map-set Campaigns campaign-id 
                 (merge 
+                    found-campaign
                     {
                         claimed: true
                     }
-                    found-campaign
                 )
             )
         )
@@ -233,7 +236,7 @@
         (ok 
             (map-set Campaigns campaign-id 
                 (if (>= new-pledged-amount current-goal)
-                ;; funding goal reached
+                    ;; funding goal reached
                     (merge 
                         found-campaign
                         {

@@ -343,7 +343,7 @@ Clarinet.test({
         assertEquals(expectedCampaign, expectedResult)},
 });
 
-/*
+
 // CLAIMING CAMPAIGN FUNDS
 // a campaign owner should be able to collect funds after the funding goal has been reached
 Clarinet.test({
@@ -380,10 +380,10 @@ Clarinet.test({
 
         const expectedCampaign = claimedCampaign.result;
         expectedCampaign.expectOk();
-        assertEquals(expectedCampaign, '(ok {campaignOwner: ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5, claimed: true, description: 0x5468697320697320612063616d706169676e20746861742049206d6164652e, endsAt: u100, fundGoal: u10000, link: u"https://example.com", pledgedAmount: u20000, pledgedCount: u1, startsAt: u2, targetReached: true, targetReachedBy: u6, title: u"Test Campaign"})');
+        assertEquals(expectedCampaign, '(ok {campaignOwner: ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5, claimed: true, description: 0x5468697320697320612063616d706169676e20746861742049206d6164652e, endsAt: u100, fundGoal: u10000, link: u"https://example.com", pledgedAmount: u20000, pledgedCount: u1, startsAt: u2, targetReached: true, targetReachedBy: u5, title: u"Test Campaign"})');
     },
 });
-
+/*
 // a campaign owner should not be able to collect funds before funding goal has been reached
 Clarinet.test({
     name: "a campaign owner should not be able to collect funds before funding goal has been reached",
