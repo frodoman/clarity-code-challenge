@@ -1,3 +1,4 @@
+
 (impl-trait 'SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait.nft-trait)
 
 (define-constant CLEARFUND_CONTRACT .clearfund)
@@ -35,10 +36,23 @@
         (
             (nft-owner (unwrap! (get-owner nft-id) ERR_MISSING_TOKEN_OWNER))
         )
-
-        ;;(asserts! (is-eq nft-owner (some from)) ERR_NOT_TOKEN_OWNER)
+        
         (nft-transfer? donorpass nft-id from to)
     )
    
 )
 
+(define-public (mint-nft (recipient principal)) 
+    (let 
+        (
+            (current-id (var-get lastTokenId))
+            (next-id (+ current-id u1))
+        )
+
+        (try! (nft-mint? donorpass current-id recipient))
+
+        (var-set lastTokenId next-id)
+
+        (ok next-id)
+    )
+)

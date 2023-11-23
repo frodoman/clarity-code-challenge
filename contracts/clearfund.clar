@@ -174,6 +174,9 @@
         ;; stx-transfer to contract 
         (try! (stx-transfer? amount tx-sender CONTRACT_ADDRESS))
 
+        ;; mint NFT for tx-sender
+        (try! (contract-call? .donorpass mint-nft tx-sender))
+
         ;; update campaign map
         (update-campaign-after-pledged campaign-id amount)
     )

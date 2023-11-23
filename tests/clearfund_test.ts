@@ -15,11 +15,68 @@ import {
     pledgeAmountGreaterThanGoal
 } from '../helpers/clearfund.ts'
 
+// --------------------
+// Helper functions 
+// --------------------
 function setup() {
     description: "Crowdfunding is a way to raise money for an individual or organization by collecting donations through family, friends, friends of friends, strangers, businesses, and more."
 }
 
+const campaignOneParams = [types.utf8('Test Campaign'), types.buff('This is a campaign that I made.'), types.utf8('https://example.com'), types.uint(10000), types.uint(2), types.uint(100)]
+
+function makeCampaignOneResult(owner: string) {
+    return '(ok {campaignOwner: ' + owner + ', claimed: false, description: 0x5468697320697320612063616d706169676e20746861742049206d6164652e, endsAt: u100, fundGoal: u10000, link: u"https://example.com", pledgedAmount: u0, pledgedCount: u0, startsAt: u2, targetReached: false, targetReachedBy: u0, title: u"Test Campaign"})'
+}
+
+/*
+(define-map Campaigns uint {
+    title: (string-utf8 256),
+    description: (buff 33),
+    link: (string-utf8 256),
+    fundGoal: uint,
+    startsAt: uint,
+    endsAt: uint,
+    campaignOwner: principal,
+    pledgedCount: uint,
+    pledgedAmount: uint,
+    claimed: bool,
+    targetReached: bool,
+    targetReachedBy: uint
+})
+*/
+
+function makeCampaignParams(campaignOwner: string,
+                            title: types.utf8 = types.utf8('Test Campaign'), 
+                            description: types.buff = types.buff('This is a campaign that I made.'), 
+                            link: types.utf8 = types.utf8('https://example.com'),
+                            fundGoal: types.uint = types.uint(10000),
+                            startAt: types.uint = types.uint(2),
+                            endsAt: types.uint = types.uint(200),
+                            pledgedAmount: types.uint = types.uint(0), 
+                            pledgedCount: types.uint = types.uint(1),
+                            claimed: types.bool = types.bool(false), 
+                            targetReached: types.bool = types.bool(false), 
+                            targetReachedBy: types.uint = types.uint(0)) {
+    return 
+    [
+        title, 
+        description, 
+        link, 
+        fundGoal,
+        startAt,
+        endsAt, 
+        campaignOwner, 
+        pledgedAmount, 
+        pledgedCount, 
+        claimed,
+        targetReached,
+        targetReachedBy
+    ]
+}
+
+// --------------------
 // TEST CASES
+// --------------------
 
 // LAUNCHING A CAMPAIGN
 // a user should be able to launch a new campaign
@@ -30,7 +87,7 @@ Clarinet.test({
         const wallet_1 = accounts.get("wallet_1")!.address
 
         let block = chain.mineBlock([
-            Tx.contractCall('clearfund', 'launch', [types.utf8('Test Campaign'), types.buff('This is a campaign that I made.'), types.utf8('https://example.com'), types.uint(10000), types.uint(2), types.uint(100)], wallet_1)
+            Tx.contractCall('clearfund', 'launch', campaignOneParams, wallet_1)
         ]);
         const result = block.receipts[0].result;
         result.expectOk().expectUint(1);
@@ -46,7 +103,7 @@ Clarinet.test({
         const wallet_1 = accounts.get("wallet_1")!.address
 
         let block = chain.mineBlock([
-            Tx.contractCall('clearfund', 'launch', [types.utf8('Test Campaign'), types.buff('This is a campaign that I made.'), types.utf8('https://example.com'), types.uint(10000), types.uint(2), types.uint(100)], wallet_1)
+            Tx.contractCall('clearfund', 'launch', campaignOneParams, wallet_1)
         ]);
 
         const newCampaign = chain.callReadOnlyFn(
@@ -57,8 +114,8 @@ Clarinet.test({
         );
 
         const expectedCampaign = newCampaign.result;
-        expectedCampaign.expectOk();
-        const expectedResult = '(ok {campaignOwner: ' + wallet_1 + ', claimed: false, description: 0x5468697320697320612063616d706169676e20746861742049206d6164652e, endsAt: u100, fundGoal: u10000, link: u"https://example.com", pledgedAmount: u0, pledgedCount: u0, startsAt: u2, targetReached: false, targetReachedBy: u0, title: u"Test Campaign"})'
+        expectedCampaign.expectOk();    
+        const expectedResult = makeCampaignOneResult(wallet_1)
         assertEquals(expectedCampaign, expectedResult);
     },
 });
@@ -87,7 +144,7 @@ Clarinet.test({
         const wallet_1 = accounts.get("wallet_1")!.address
 
         let block = chain.mineBlock([
-            Tx.contractCall('clearfund', 'launch', [types.utf8(''), types.buff('This is a campaign that I made.'), types.utf8('https://example.com'), types.uint(10000), types.uint(2), types.uint(100)], wallet_1)
+            Tx.contractCall('clearfund', 'launch', [types.utf8(''), types.buff('This is a campaign'), types.utf8('https://example.com'), types.uint(10000), types.uint(2), types.uint(100)], wallet_1)
         ]);
         const result = block.receipts[0].result;
         result.expectErr().expectUint(101);
@@ -497,6 +554,7 @@ Clarinet.test({
         assertEquals(claimedCampaign, '(err u107)');
     },
 });
+
 /*
 // PLEDGING TO A CAMPAIGN
 Clarinet.test({
