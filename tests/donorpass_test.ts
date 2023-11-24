@@ -76,8 +76,7 @@ Clarinet.test({
         ])
 
         console.log(minedBlock.receipts[0].result)
-        
-        //assertEquals(minedBlock.height, 2)
+        assertEquals(minedBlock.height, 3)
         minedBlock.receipts[0].result.expectErr().expectUint(100)
 
         const theAssetsMaps = chain.getAssetsMaps()
@@ -86,9 +85,9 @@ Clarinet.test({
     },
 });
 
-/*
+
 Clarinet.test({
-    name: "mint: only the clearfund contract can mint the nft",
+    name: "[donorpass-05] mint: only the clearfund contract can mint the nft",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -131,6 +130,7 @@ Clarinet.test({
     }
 })
 
+/*
 Clarinet.test({
     name: "get-owner: a user is able to read the owner of the nft",
     async fn(chain: Chain, accounts: Map<string, Account>) {
