@@ -10,7 +10,6 @@
 (define-non-fungible-token donorpass uint)
 
 (define-data-var lastTokenId uint u0)
-(define-map nft-urls uint (string-ascii 256))
 
 ;; 
 ;; Trait functions
@@ -28,7 +27,7 @@
 
 ;; (get-token-uri (uint) (response (optional (string-ascii 256)) uint))
 (define-public (get-token-uri (nft-id uint))
-     (ok (map-get? nft-urls nft-id))
+     (ok none)
 )
 
 (define-public (transfer (token-id uint) (sender principal) (recipient principal))

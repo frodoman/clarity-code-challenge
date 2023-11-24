@@ -110,7 +110,7 @@ Clarinet.test({
 // tests for readonly functions
 
 Clarinet.test({
-    name: "get-last-token-id: a user is able to read the last nft id minted",
+    name: "[donorpass-06] get-last-token-id: a user is able to read the last nft id minted",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -130,9 +130,8 @@ Clarinet.test({
     }
 })
 
-/*
 Clarinet.test({
-    name: "get-owner: a user is able to read the owner of the nft",
+    name: "[donorpass-07] get-owner: a user is able to read the owner of the nft",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -151,7 +150,7 @@ Clarinet.test({
 })
 
 Clarinet.test({
-    name: "get-token-uri: a user is able to read the owner of the nft",
+    name: "[donorpass-08] get-token-uri: a user is able to read the URI of the nft",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -165,4 +164,3 @@ Clarinet.test({
 
     }
 })
-*/
