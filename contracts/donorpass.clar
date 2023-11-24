@@ -8,7 +8,7 @@
 
 (define-non-fungible-token donorpass uint)
 
-(define-data-var lastTokenId uint u0)
+(define-data-var lastTokenId uint u1)
 (define-map nft-urls uint (string-ascii 256))
 
 ;; 
@@ -36,7 +36,7 @@
         (
             (nft-owner (unwrap! (get-owner nft-id) ERR_MISSING_TOKEN_OWNER))
         )
-        
+
         (nft-transfer? donorpass nft-id from to)
     )
    

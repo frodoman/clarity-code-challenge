@@ -126,10 +126,12 @@
             (found-campaign (unwrap! (get-campaign campaign-id) ERR_ID_NOT_FOUND ))
             (campaign-owner (get campaignOwner found-campaign))
             (end-block (get endsAt found-campaign))
+            (pledged-count (get pledgedCount found-campaign))
         )
 
         (asserts! (is-eq tx-sender campaign-owner) ERR_NOT_OWNER)
         (asserts! (< block-height end-block) ERR_ENDED)
+        (asserts! (< pledged-count u1) ERR_PLEDGE_GREATER_THAN_ZERO)
 
         (asserts! 
             (not 
@@ -217,6 +219,11 @@
         )
     )
 )
+
+(define-public (transfer (from principal) (to principal) (nft-id uint))
+    (contract-call? .donorpass transfer nft-id from to)
+)
+
 
 (define-private (is-campaign-finished (end-at-block uint )) 
 

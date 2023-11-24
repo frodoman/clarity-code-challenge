@@ -7,7 +7,7 @@ import { getLastTokenId, mint, transfer, getOwner, getTokenUri } from "../helper
 
 // tests for transfer functions
 Clarinet.test({
-    name: "1.1-transfer: a user cannot transfer nft if they do not own one",
+    name: "[donorpass-01] transfer: a user cannot transfer nft if they do not own one",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const sender = accounts.get("deployer")!.address
         const receiver = accounts.get("wallet_1")!.address
@@ -18,7 +18,7 @@ Clarinet.test({
 })
 
 Clarinet.test({
-    name: "1.2-transfer: a user cannot transfer nft to themselves",
+    name: "[donorpass-02] transfer: a user cannot transfer nft to themselves",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -35,9 +35,10 @@ Clarinet.test({
         minedBlock.receipts[0].result.expectErr().expectUint(2)
     }
 })
+
 /*
 Clarinet.test({
-    name: "1.3-transfer: a user should be able transfer nft successfully to another recipient",
+    name: "[donorpass-03] transfer: a user should be able transfer nft successfully to another recipient",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -49,7 +50,7 @@ Clarinet.test({
         chain.mineEmptyBlockUntil(40)
         const abc = chain.mineBlock([ pledge(wallet2) ])
 
-        const minedBlock = chain.mineBlock([transfer(wallet2, wallet3, 1)])
+        const minedBlock = chain.mineBlock([transfer(wallet2, wallet3, 0)])
         assertEquals(minedBlock.height, 42)
         minedBlock.receipts[0].result.expectOk().expectBool(true)
 
