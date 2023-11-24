@@ -561,7 +561,7 @@ Clarinet.test({
     },
 });
 
-/*
+
 // PLEDGING TO A CAMPAIGN
 Clarinet.test({
     name: "019: pledge: a user should be able to invest in a campaign that is active",
@@ -574,12 +574,12 @@ Clarinet.test({
         chain.mineEmptyBlockUntil(40)
 
         const block = chain.mineBlock([ pledge(wallet2) ])
-        //block.receipts[0].result.expectOk().expectBool(true)
+        block.receipts[0].result.expectOk().expectBool(true)
     },
 });
 
 Clarinet.test({
-    name: "pledge: the pledged amount should transfer to clearfund contract on successful pledge",
+    name: "020: pledge: the pledged amount should transfer to clearfund contract on successful pledge",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -596,7 +596,7 @@ Clarinet.test({
 });
 
 Clarinet.test({
-    name: "pledge: the count of investors should increment when a new investor pledges",
+    name: "021: pledge: the count of investors should increment when a new investor pledges",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -613,9 +613,9 @@ Clarinet.test({
         assertStringIncludes(campaign.result, "pledgedCount: u3")
     },
 });
-
+/*
 Clarinet.test({
-    name: "pledge: the count of investors should stay the same when an investor pledges again",
+    name: "022: pledge: the count of investors should stay the same when an investor pledges again",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
