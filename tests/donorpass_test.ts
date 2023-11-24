@@ -60,7 +60,7 @@ Clarinet.test({
     }
 })
 
-/*
+
 // tests for mint functions
 Clarinet.test({
     name: "[donorpass-04] mint: a user cannot mint the nft if it is not the clearfund contract",
@@ -75,6 +75,8 @@ Clarinet.test({
             mint(deployer, wallet1)
         ])
 
+        console.log(minedBlock.receipts[0].result)
+        
         //assertEquals(minedBlock.height, 2)
         minedBlock.receipts[0].result.expectErr().expectUint(100)
 
@@ -84,7 +86,7 @@ Clarinet.test({
     },
 });
 
-
+/*
 Clarinet.test({
     name: "mint: only the clearfund contract can mint the nft",
     async fn(chain: Chain, accounts: Map<string, Account>) {

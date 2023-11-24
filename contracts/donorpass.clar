@@ -1,7 +1,7 @@
 
 (impl-trait 'SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait.nft-trait)
 
-(define-constant CONTRACT_ADDRESS (as-contract tx-sender))
+(define-constant DEPLOYER  tx-sender)
 (define-constant CLEARFUND_CONTRACT .clearfund)
 (define-constant ERR_CLEARFUND_ONLY (err u100))
 (define-constant ERR_NOT_TOKEN_OWNER (err u101))
@@ -45,11 +45,11 @@
             (next-id (+ current-id u1))
         )
 
-        ;;(asserts! (is-eq (as-contract tx-sender) CONTRACT_ADDRESS) ERR_CLEARFUND_ONLY)
+        (asserts! (is-eq contract-caller CLEARFUND_CONTRACT) ERR_CLEARFUND_ONLY)
         (try! (nft-mint? donorpass next-id recipient))
 
         (var-set lastTokenId next-id)
 
-        (ok next-id)
+        (ok tx-sender)
     )
 )
