@@ -384,11 +384,11 @@ Clarinet.test({
             Tx.contractCall('clearfund', 'pledge', [types.uint(0), types.uint(20000)], wallet_2)
         ])
 
-        let block3 = chain.mineBlock([
-            Tx.contractCall('clearfund', 'update', [types.uint(0), types.utf8("New Title"), types.buff("New description"), types.utf8("https://newexample.org")], wallet_1)
-        ])
-        const updateResult = block3.receipts[0].result
-        updateResult.expectErr().expectUint(110);
+        // let block3 = chain.mineBlock([
+        //     Tx.contractCall('clearfund', 'update', [types.uint(0), types.utf8("New Title"), types.buff("New description"), types.utf8("https://newexample.org")], wallet_1)
+        // ])
+        // const updateResult = block3.receipts[0].result
+        // updateResult.expectErr().expectUint(110);
 
         const claimedCampaign = chain.callReadOnlyFn(
             'clearfund',

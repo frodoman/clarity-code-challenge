@@ -36,7 +36,7 @@ Clarinet.test({
     }
 })
 
-/*
+
 Clarinet.test({
     name: "[donorpass-03] transfer: a user should be able transfer nft successfully to another recipient",
     async fn(chain: Chain, accounts: Map<string, Account>) {
@@ -50,20 +50,20 @@ Clarinet.test({
         chain.mineEmptyBlockUntil(40)
         const abc = chain.mineBlock([ pledge(wallet2) ])
 
-        const minedBlock = chain.mineBlock([transfer(wallet2, wallet3, 0)])
+        const minedBlock = chain.mineBlock([transfer(wallet2, wallet3, 1)])
         assertEquals(minedBlock.height, 42)
         minedBlock.receipts[0].result.expectOk().expectBool(true)
 
-        //const theAssetsMaps = chain.getAssetsMaps()
-        //assertEquals(theAssetsMaps.assets[".donorpass.donorpass"][wallet2], 0)
-        //assertEquals(theAssetsMaps.assets[".donorpass.donorpass"][wallet3], 1)
+        const theAssetsMaps = chain.getAssetsMaps()
+        assertEquals(theAssetsMaps.assets[".donorpass.donorpass"][wallet2], 0)
+        assertEquals(theAssetsMaps.assets[".donorpass.donorpass"][wallet3], 1)
     }
 })
 
 /*
 // tests for mint functions
 Clarinet.test({
-    name: "mint: a user cannot mint the nft if it is not the clearfund contract",
+    name: "[donorpass-04] mint: a user cannot mint the nft if it is not the clearfund contract",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -75,7 +75,7 @@ Clarinet.test({
             mint(deployer, wallet1)
         ])
 
-        assertEquals(minedBlock.height, 2)
+        //assertEquals(minedBlock.height, 2)
         minedBlock.receipts[0].result.expectErr().expectUint(100)
 
         const theAssetsMaps = chain.getAssetsMaps()
@@ -83,6 +83,7 @@ Clarinet.test({
         assertEquals(investorNFTCount, undefined)
     },
 });
+
 
 Clarinet.test({
     name: "mint: only the clearfund contract can mint the nft",
