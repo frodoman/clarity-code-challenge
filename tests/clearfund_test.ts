@@ -613,7 +613,7 @@ Clarinet.test({
         assertStringIncludes(campaign.result, "pledgedCount: u3")
     },
 });
-/*
+
 Clarinet.test({
     name: "022: pledge: the count of investors should stay the same when an investor pledges again",
     async fn(chain: Chain, accounts: Map<string, Account>) {
@@ -631,7 +631,7 @@ Clarinet.test({
         assertStringIncludes(campaign.result, "pledgedCount: u2")
     },
 });
-
+/*
 Clarinet.test({
     name: "pledge: the pledged amount should increase when an investor pledges",
     async fn(chain: Chain, accounts: Map<string, Account>) {

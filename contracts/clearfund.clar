@@ -126,12 +126,10 @@
             (found-campaign (unwrap! (get-campaign campaign-id) ERR_ID_NOT_FOUND ))
             (campaign-owner (get campaignOwner found-campaign))
             (end-block (get endsAt found-campaign))
-            ;;(pledged-count (get pledgedCount found-campaign))
         )
 
         (asserts! (is-eq tx-sender campaign-owner) ERR_NOT_OWNER)
         (asserts! (< block-height end-block) ERR_ENDED)
-        ;;(asserts! (< pledged-count u1) ERR_PLEDGE_GREATER_THAN_ZERO)
 
         (asserts! 
             (not 
@@ -180,7 +178,10 @@
         (try! (contract-call? .donorpass mint tx-sender))
 
         ;; update campaign map
-        (update-campaign-after-pledged campaign-id amount)
+        (try! (update-campaign-after-pledged tx-sender campaign-id amount))
+
+        ;; update investment map
+        (ok (update-investment-after-pledged tx-sender campaign-id amount))
     )
 )
 
@@ -229,7 +230,22 @@
     )
 )
 
-(define-private (update-campaign-after-pledged (campaign-id uint) (pledge-amount uint)) 
+
+(define-private (update-investment-after-pledged (investor principal) (campaign-id uint) (pledge-amount uint)) 
+    (let  
+        (
+            (existing-amount (get-already-invest-amount investor campaign-id pledge-amount))
+        ) 
+        (map-set Investments 
+                {contributor: investor, campaignId: campaign-id} 
+                {amount: (+ existing-amount pledge-amount)}
+        )
+    )
+
+)
+
+
+(define-private (update-campaign-after-pledged (investor principal) (campaign-id uint) (pledge-amount uint)) 
     (let 
         (
             (found-campaign (unwrap! (get-campaign campaign-id) ERR_ID_NOT_FOUND ))
@@ -237,6 +253,9 @@
             (current-pledged-amount (get pledgedAmount found-campaign))
             (current-goal (get fundGoal found-campaign))
             (new-pledged-amount (+ current-pledged-amount pledge-amount))
+
+            (already-invest-amount (get-already-invest-amount tx-sender campaign-id pledge-amount))
+            (new-pledged-count (calculate-new-pledge-count already-invest-amount current-pledged-count))
         )
 
         (ok 
@@ -246,7 +265,7 @@
                     (merge 
                         found-campaign
                         {
-                            pledgedCount: (+ current-pledged-count u1), 
+                            pledgedCount:  new-pledged-count, 
                             pledgedAmount: new-pledged-amount,
                             targetReached: true,
                             targetReachedBy: block-height
@@ -257,7 +276,7 @@
                     (merge 
                         found-campaign
                         {
-                            pledgedCount: (+ current-pledged-count u1), 
+                            pledgedCount: new-pledged-count, 
                             pledgedAmount: new-pledged-amount
                         } 
                         
@@ -267,3 +286,21 @@
         )
     )
 )
+
+(define-private (calculate-new-pledge-count (existing-invest-amount uint) (current-pledged-count uint)) 
+    (if (and (> existing-invest-amount u0) (> current-pledged-count u0))
+        current-pledged-count
+        (+ current-pledged-count u1) 
+    )           
+)
+
+(define-read-only (get-already-invest-amount (investor principal) (campaign-id uint) (pledge-amount uint)) 
+    (let 
+        (
+            (investment-key {contributor: investor, campaignId: campaign-id})
+            (existing-invest-amount (map-get? Investments investment-key))
+        )
+        (default-to u0 (get amount existing-invest-amount))
+    )
+)
+
