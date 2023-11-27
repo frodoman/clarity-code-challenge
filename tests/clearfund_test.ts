@@ -738,9 +738,9 @@ Clarinet.test({
     },
 });
 
-/*
+
 Clarinet.test({
-    name: "pledge: a user should be sent an NFT when pledging more than 500 STX",
+    name: "030-pledge: a user should be sent an NFT when pledging more than 500 STX",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -755,10 +755,10 @@ Clarinet.test({
         assertEquals(nftReceivedByInvestor, 1)
     },
 });
-
+/*
 // UNPLEDGING FROM A CAMPAIGN
 Clarinet.test({
-    name: "unpledge: a user should be able to unpledge their investment",
+    name: "031-unpledge: a user should be able to unpledge their investment",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -770,7 +770,7 @@ Clarinet.test({
         block.receipts[1].result.expectOk().expectBool(true)
     },
 });
-
+/*
 Clarinet.test({
     name: "unpledge: the unpledge amount is deducted from clearfund contract on successful unpledge",
     async fn(chain: Chain, accounts: Map<string, Account>) {

@@ -241,6 +241,10 @@
     )
 )
 
+;;(define-public (unpledge (campaign-id uint) (amount uint)) 
+
+;;)
+
 (define-private (is-campaign-finished (end-at-block uint )) 
 
     (if 
