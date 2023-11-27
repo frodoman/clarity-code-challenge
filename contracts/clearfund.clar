@@ -42,9 +42,13 @@
 
 (define-map Investments {contributor: principal, campaignId: uint} {amount: uint})
 
+;; -----------------
+;; Public functions
+;; -----------------
+
 ;; launch
-;; [types.utf8('Test Campaign'), types.buff('This is a campaign that I made.'), 
-;; types.utf8('https://example.com'), types.uint(10000), types.uint(2), types.uint(100)]
+;; Called by a user who wants to launch a new campaign
+;; 
 (define-public (launch (title (string-utf8 256)) 
                        (desp (buff 33)) 
                        (link (string-utf8 256))
@@ -158,12 +162,16 @@
     (let 
         (
             (found-campaign (unwrap! (get-campaign campaign-id) ERR_ID_NOT_FOUND ))
+            (start-block (get startsAt found-campaign))
             (end-blcok (get endsAt found-campaign))
             (did-claimed (get claimed found-campaign))
         )
 
         ;; assert campaign is not finished 
         (asserts! (not (is-campaign-finished end-blcok)) ERR_ENDED)
+
+        ;; assert campaign is started
+        (asserts! (is-campaign-started start-block) ERR_NOT_STARTED)
 
         ;; assert campaign is not been claimed 
         (asserts! (is-eq did-claimed false) ERR_ALREADY_CLAIMED)
@@ -225,6 +233,14 @@
 
     (if 
         ( < end-at-block block-height) 
+        true 
+        false
+    )
+)
+
+(define-private (is-campaign-started (start-at-block uint))
+    (if 
+        ( < start-at-block block-height)
         true 
         false
     )

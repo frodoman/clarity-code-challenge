@@ -81,7 +81,7 @@ function makeCampaignParams(campaignOwner: string,
 // LAUNCHING A CAMPAIGN
 // a user should be able to launch a new campaign
 Clarinet.test({
-    name: "001: A user should be able to launch a new campaign",
+    name: "001-A user should be able to launch a new campaign",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -97,7 +97,7 @@ Clarinet.test({
 
 // a user should be able to view campaign information
 Clarinet.test({
-    name: "002: A user should be able to view campaign information",
+    name: "002-A user should be able to view campaign information",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -122,7 +122,7 @@ Clarinet.test({
 
 // a user should not be able to launch a campaign with a fundGoal of 0
 Clarinet.test({
-    name: "003: a user should not be able to launch a campaign without a fundGoal",
+    name: "003-a user should not be able to launch a campaign without a fundGoal",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -138,7 +138,7 @@ Clarinet.test({
 
 // a user should not be able to launch a campaign without a title, description, or link
 Clarinet.test({
-    name: "004: a user should not be able to launch a campaign without a title, description, or link",
+    name: "004-a user should not be able to launch a campaign without a title, description, or link",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -166,7 +166,7 @@ Clarinet.test({
 
 // a user should not be able to launch a campaign starting sooner than current block
 Clarinet.test({
-    name: "005: a user should not be able to launch a campaign starting sooner than current block",
+    name: "005-a user should not be able to launch a campaign starting sooner than current block",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -182,7 +182,7 @@ Clarinet.test({
 
 // a user should not be able to launch a campaign ending sooner than current block
 Clarinet.test({
-    name: "006: a user should not be able to launch a campaign ending sooner than current block",
+    name: "006-a user should not be able to launch a campaign ending sooner than current block",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -197,7 +197,7 @@ Clarinet.test({
 
 // a user should not be able to launch a campaign ending more than 12960 blocks in the future
 Clarinet.test({
-    name: "007: a user should not be able to launch a campaign ending more than 12960 blocks in the future",
+    name: "007-a user should not be able to launch a campaign ending more than 12960 blocks in the future",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -213,7 +213,7 @@ Clarinet.test({
 // CANCELING A CAMPAIGN
 // a campign owner should be able to cancel a campaign before it starts
 Clarinet.test({
-    name: "008: a campign owner should be able to cancel a campaign before it starts",
+    name: "008-a campign owner should be able to cancel a campaign before it starts",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -242,7 +242,7 @@ Clarinet.test({
 
 // a campaign owner should not be able to cancel a campaign after it starts
 Clarinet.test({
-    name: "009: a campaign owner should not be able to cancel a campaign after it starts",
+    name: "009-a campaign owner should not be able to cancel a campaign after it starts",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -264,7 +264,7 @@ Clarinet.test({
 
 // a user who does not own a campaign should not be able to cancel it
 Clarinet.test({
-    name: "010: a user who does not own a campaign should not be able to cancel it",
+    name: "010-a user who does not own a campaign should not be able to cancel it",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -287,7 +287,7 @@ Clarinet.test({
 // UPDATING A CAMPAIGN
 // a campaign owner should be able to update the title, description, and link of a campaign
 Clarinet.test({
-    name: "011: a campaign owner should be able to update the title, description, and link of a campaign",
+    name: "011-a campaign owner should be able to update the title, description, and link of a campaign",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -320,7 +320,7 @@ Clarinet.test({
 
 // a user who does not own a campaign should not be able to update any information
 Clarinet.test({
-    name: "012: a user who does not own a campaign should not be able to update any information",
+    name: "012-a user who does not own a campaign should not be able to update any information",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -344,7 +344,7 @@ Clarinet.test({
 
 // a campaign owner should not be able to update a campaign after it has ended
 Clarinet.test({
-    name: "013: a campaign owner should not be able to update a campaign after it has ended",
+    name: "013-a campaign owner should not be able to update a campaign after it has ended",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -368,7 +368,7 @@ Clarinet.test({
 // PLEDGE CAMPAIGN FUNDS
 // a campaign should be updated after fund has been pledged
 Clarinet.test({
-    name: "014: a campaign should be updated after fund has been pledged",
+    name: "014-a campaign should be updated after fund has been pledged",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -409,7 +409,7 @@ Clarinet.test({
 // CLAIMING CAMPAIGN FUNDS
 // a campaign owner should be able to collect funds after the funding goal has been reached
 Clarinet.test({
-    name: "015: a campaign owner should be able to collect funds after the funding goal has been reached",
+    name: "015-a campaign owner should be able to collect funds after the funding goal has been reached",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -451,7 +451,7 @@ Clarinet.test({
 
 // a campaign owner should not be able to collect funds before funding goal has been reached
 Clarinet.test({
-    name: "016: a campaign owner should not be able to collect funds before funding goal has been reached",
+    name: "016-a campaign owner should not be able to collect funds before funding goal has been reached",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -488,7 +488,7 @@ Clarinet.test({
 
 // a campaign owner should not be able to claim funds twice
 Clarinet.test({
-    name: "017: a campaign owner should not be able to claim funds twice",
+    name: "017-a campaign owner should not be able to claim funds twice",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -534,7 +534,7 @@ Clarinet.test({
 
 // a user who does not own a campaign should not be able to claim funds
 Clarinet.test({
-    name: "018: a user who does not own a campaign should not be able to claim funds",
+    name: "018-a user who does not own a campaign should not be able to claim funds",
     async fn(chain: Chain, accounts: Map<string, Account>) {
 
         const wallet_1 = accounts.get("wallet_1")!.address
@@ -564,7 +564,7 @@ Clarinet.test({
 
 // PLEDGING TO A CAMPAIGN
 Clarinet.test({
-    name: "019: pledge: a user should be able to invest in a campaign that is active",
+    name: "019-pledge: a user should be able to invest in a campaign that is active",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -579,7 +579,7 @@ Clarinet.test({
 });
 
 Clarinet.test({
-    name: "020: pledge: the pledged amount should transfer to clearfund contract on successful pledge",
+    name: "020-pledge: the pledged amount should transfer to clearfund contract on successful pledge",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -596,7 +596,7 @@ Clarinet.test({
 });
 
 Clarinet.test({
-    name: "021: pledge: the count of investors should increment when a new investor pledges",
+    name: "021-pledge: the count of investors should increment when a new investor pledges",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -615,7 +615,7 @@ Clarinet.test({
 });
 
 Clarinet.test({
-    name: "022: pledge: the count of investors should stay the same when an investor pledges again",
+    name: "022-pledge: the count of investors should stay the same when an investor pledges again",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -633,7 +633,7 @@ Clarinet.test({
 });
 
 Clarinet.test({
-    name: "023: pledge: the pledged amount should increase when an investor pledges",
+    name: "023-pledge: the pledged amount should increase when an investor pledges",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -651,7 +651,7 @@ Clarinet.test({
 });
 
 Clarinet.test({
-    name: "024: pledge: the pledged mount should should reflect the correct investments by user in investment map ",
+    name: "024-pledge: the pledged mount should reflect the correct investments by user in investment map ",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -671,9 +671,9 @@ Clarinet.test({
         assertStringIncludes(investmentWallet3.result, "amount: u3000")
     },
 });
-/*
+
 Clarinet.test({
-    name: "pledge: a user should not be able to invest in a campaign that was never launched",
+    name: "025-pledge: a user should not be able to invest in a campaign that was never launched",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -684,7 +684,7 @@ Clarinet.test({
 });
 
 Clarinet.test({
-    name: "pledge: a user should not be able to invest in a campaign that has not started",
+    name: "026-pledge: a user should not be able to invest in a campaign that has not started",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -696,7 +696,7 @@ Clarinet.test({
 });
 
 Clarinet.test({
-    name: "pledge: a user should not be able to invest in a campaign that has ended",
+    name: "027-pledge: a user should not be able to invest in a campaign that has ended",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -707,7 +707,7 @@ Clarinet.test({
         block.receipts[0].result.expectErr().expectUint(109)
     },
 });
-
+/*
 Clarinet.test({
     name: "pledge: a user should not be able to pledge 0 STX",
     async fn(chain: Chain, accounts: Map<string, Account>) {
