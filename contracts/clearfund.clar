@@ -230,21 +230,6 @@
     )
 )
 
-
-(define-private (update-investment-after-pledged (investor principal) (campaign-id uint) (pledge-amount uint)) 
-    (let  
-        (
-            (existing-amount (get-already-invest-amount investor campaign-id pledge-amount))
-        ) 
-        (map-set Investments 
-                {contributor: investor, campaignId: campaign-id} 
-                {amount: (+ existing-amount pledge-amount)}
-        )
-    )
-
-)
-
-
 (define-private (update-campaign-after-pledged (investor principal) (campaign-id uint) (pledge-amount uint)) 
     (let 
         (
@@ -254,7 +239,7 @@
             (current-goal (get fundGoal found-campaign))
             (new-pledged-amount (+ current-pledged-amount pledge-amount))
 
-            (already-invest-amount (get-already-invest-amount tx-sender campaign-id pledge-amount))
+            (already-invest-amount (get-investment-amount campaign-id tx-sender))
             (new-pledged-count (calculate-new-pledge-count already-invest-amount current-pledged-count))
         )
 
@@ -287,6 +272,18 @@
     )
 )
 
+(define-private (update-investment-after-pledged (investor principal) (campaign-id uint) (pledge-amount uint)) 
+    (let  
+        (
+            (existing-amount (get-investment-amount campaign-id investor))
+        ) 
+        (map-set Investments 
+                {contributor: investor, campaignId: campaign-id} 
+                {amount: (+ existing-amount pledge-amount)}
+        )
+    )
+)
+
 (define-private (calculate-new-pledge-count (existing-invest-amount uint) (current-pledged-count uint)) 
     (if (and (> existing-invest-amount u0) (> current-pledged-count u0))
         current-pledged-count
@@ -294,7 +291,7 @@
     )           
 )
 
-(define-read-only (get-already-invest-amount (investor principal) (campaign-id uint) (pledge-amount uint)) 
+(define-read-only (get-investment-amount (campaign-id uint) (investor principal) ) 
     (let 
         (
             (investment-key {contributor: investor, campaignId: campaign-id})
@@ -304,3 +301,12 @@
     )
 )
 
+(define-read-only (get-investment (campaign-id uint) (investor principal) ) 
+    (let 
+        (
+            (investment-key {contributor: investor, campaignId: campaign-id})
+            (existing-invest-amount (map-get? Investments investment-key))
+        )
+        (ok existing-invest-amount)
+    )
+)

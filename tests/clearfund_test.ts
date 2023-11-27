@@ -631,9 +631,9 @@ Clarinet.test({
         assertStringIncludes(campaign.result, "pledgedCount: u2")
     },
 });
-/*
+
 Clarinet.test({
-    name: "pledge: the pledged amount should increase when an investor pledges",
+    name: "023: pledge: the pledged amount should increase when an investor pledges",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -651,7 +651,7 @@ Clarinet.test({
 });
 
 Clarinet.test({
-    name: "pledge: the pledged mount should should reflect the correct investments by user in investment map ",
+    name: "024: pledge: the pledged mount should should reflect the correct investments by user in investment map ",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -671,7 +671,7 @@ Clarinet.test({
         assertStringIncludes(investmentWallet3.result, "amount: u3000")
     },
 });
-
+/*
 Clarinet.test({
     name: "pledge: a user should not be able to invest in a campaign that was never launched",
     async fn(chain: Chain, accounts: Map<string, Account>) {
