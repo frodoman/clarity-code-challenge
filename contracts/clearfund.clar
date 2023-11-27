@@ -19,6 +19,7 @@
 (define-constant ERR_ALREADY_CLAIMED (err u116))
 (define-constant ERR_TARGET_NOT_REACHED (err u117))
 (define-constant ERR_NOT_ENOUGH_BALANCE (err u118))
+(define-constant ERR_NOT_ENOUGH_TO_MINT_NFT (err u119))
 
 ;; calculate roughly 90 days based on block times of 10 minutes
 (define-constant FUNDING_TIME_LIMIT u12960)
@@ -176,20 +177,31 @@
         ;; assert campaign is not been claimed 
         (asserts! (is-eq did-claimed false) ERR_ALREADY_CLAIMED)
 
+        ;; assert amount is valid
+        (asserts! (> amount u0) ERR_PLEDGE_GREATER_THAN_ZERO)
+
         ;; assert sender has enough balance 
         (asserts! ( > (stx-get-balance tx-sender) amount) ERR_NOT_ENOUGH_BALANCE)
 
         ;; stx-transfer to contract 
         (try! (stx-transfer? amount tx-sender CONTRACT_ADDRESS))
 
-        ;; mint NFT for tx-sender
-        (try! (contract-call? .donorpass mint tx-sender))
-
         ;; update campaign map
         (try! (update-campaign-after-pledged tx-sender campaign-id amount))
 
         ;; update investment map
-        (ok (update-investment-after-pledged tx-sender campaign-id amount))
+        (update-investment-after-pledged tx-sender campaign-id amount)
+
+        ;; mint NFT for tx-sender
+        (mint-nft tx-sender amount)
+    )
+)
+
+(define-private (mint-nft (receiver principal) (pledge-amount uint)) 
+    (begin 
+        (asserts! ( >= pledge-amount u500) ERR_NOT_ENOUGH_TO_MINT_NFT)
+        (try! (contract-call? .donorpass mint tx-sender))
+        (ok true)
     )
 )
 

@@ -707,9 +707,9 @@ Clarinet.test({
         block.receipts[0].result.expectErr().expectUint(109)
     },
 });
-/*
+
 Clarinet.test({
-    name: "pledge: a user should not be able to pledge 0 STX",
+    name: "028-pledge: a user should not be able to pledge 0 STX",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -722,7 +722,7 @@ Clarinet.test({
 });
 
 Clarinet.test({
-    name: "pledge: a user should not be sent an NFT when pledging less than 500 STX",
+    name: "029-pledge: a user should not be sent an NFT when pledging less than 500 STX",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -738,6 +738,7 @@ Clarinet.test({
     },
 });
 
+/*
 Clarinet.test({
     name: "pledge: a user should be sent an NFT when pledging more than 500 STX",
     async fn(chain: Chain, accounts: Map<string, Account>) {
