@@ -92,16 +92,6 @@
     )
 )
 
-;; get-campaign
-(define-read-only (get-campaign (campaign-id uint))
-    (ok 
-        (unwrap! 
-            (map-get? Campaigns campaign-id) 
-            ERR_ID_NOT_FOUND
-        )
-    )
-)
-
 ;; cancel 
 ;; Cancel a campaign 
 (define-public (cancel (campaign-id uint)) 
@@ -197,14 +187,6 @@
     )
 )
 
-(define-private (mint-nft (receiver principal) (pledge-amount uint)) 
-    (begin 
-        (asserts! ( >= pledge-amount u500) ERR_NOT_ENOUGH_TO_MINT_NFT)
-        (try! (contract-call? .donorpass mint tx-sender))
-        (ok true)
-    )
-)
-
 (define-public (claim (campaign-id uint)) 
 
     (let  
@@ -244,6 +226,53 @@
 ;;(define-public (unpledge (campaign-id uint) (amount uint)) 
 
 ;;)
+
+;; -----------------
+;; Read only functions
+;; -----------------
+
+;; get-campaign
+(define-read-only (get-campaign (campaign-id uint))
+    (ok 
+        (unwrap! 
+            (map-get? Campaigns campaign-id) 
+            ERR_ID_NOT_FOUND
+        )
+    )
+)
+
+(define-read-only (get-investment-amount (campaign-id uint) (investor principal) ) 
+    (let 
+        (
+            (investment-key {contributor: investor, campaignId: campaign-id})
+            (existing-invest-amount (map-get? Investments investment-key))
+        )
+        (default-to u0 (get amount existing-invest-amount))
+    )
+)
+
+(define-read-only (get-investment (campaign-id uint) (investor principal) ) 
+    (let 
+        (
+            (investment-key {contributor: investor, campaignId: campaign-id})
+            (existing-invest-amount (map-get? Investments investment-key))
+        )
+        (ok existing-invest-amount)
+    )
+)
+
+;; -----------------
+;; Private functions
+;; -----------------
+
+(define-private (mint-nft (receiver principal) (pledge-amount uint)) 
+    (begin 
+        (asserts! ( >= pledge-amount u500) ERR_NOT_ENOUGH_TO_MINT_NFT)
+        (try! (contract-call? .donorpass mint tx-sender))
+        (ok true)
+    )
+)
+
 
 (define-private (is-campaign-finished (end-at-block uint )) 
 
@@ -321,24 +350,4 @@
         current-pledged-count
         (+ current-pledged-count u1) 
     )           
-)
-
-(define-read-only (get-investment-amount (campaign-id uint) (investor principal) ) 
-    (let 
-        (
-            (investment-key {contributor: investor, campaignId: campaign-id})
-            (existing-invest-amount (map-get? Investments investment-key))
-        )
-        (default-to u0 (get amount existing-invest-amount))
-    )
-)
-
-(define-read-only (get-investment (campaign-id uint) (investor principal) ) 
-    (let 
-        (
-            (investment-key {contributor: investor, campaignId: campaign-id})
-            (existing-invest-amount (map-get? Investments investment-key))
-        )
-        (ok existing-invest-amount)
-    )
 )
