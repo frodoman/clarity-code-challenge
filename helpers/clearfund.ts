@@ -25,7 +25,7 @@ const pledgeData = {
 }
 
 const unpledgeData = {
-    campaignId: types.uint(1),
+    campaignId: types.uint(0),
     amount: types.uint(500)
 }
 

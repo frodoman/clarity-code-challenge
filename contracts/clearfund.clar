@@ -111,7 +111,6 @@
 
 ;; update 
 ;; update the title, description and link 
-;; Tx.contractCall('clearfund', 'update', [types.uint(1), types.utf8("New Title"), types.buff("New description"), types.utf8("https://newexample.org")], wallet_1)
  (define-public (update (campaign-id uint)
                         (title (string-utf8 256))
                         (desp (buff 33))
@@ -184,6 +183,47 @@
 
         ;; mint NFT for tx-sender
         (mint-nft tx-sender amount)
+    )
+)
+
+(define-public (unpledge (campaign-id uint) (amount uint))
+    
+    (let 
+        (
+            (found-campaign (unwrap! (get-campaign campaign-id) ERR_ID_NOT_FOUND ))
+            (start-block (get startsAt found-campaign))
+            (end-blcok (get endsAt found-campaign))
+            (did-claimed (get claimed found-campaign))
+            (invested-amount (get-investment-amount campaign-id tx-sender))
+        )
+
+        ;; assert campaign is not finished 
+        (asserts! (not (is-campaign-finished end-blcok)) ERR_ENDED)
+
+        ;; assert campaign is not been claimed 
+        (asserts! (is-eq did-claimed false) ERR_ALREADY_CLAIMED)
+
+        ;; assert amount is valid
+        (asserts! (> amount u0) ERR_PLEDGE_GREATER_THAN_ZERO)
+
+        ;; assert that tx-sender has previous invested for this campaign
+        (asserts! (> invested-amount u0) ERR_NOT_PLEDGED)
+
+        ;; assert that unplege amount is samller than invested amount 
+        (asserts! (<= amount invested-amount) ERR_INVALID_UNPLEDGE_AMT)
+        
+        ;; stx-transfer to to the NFT contract for now 
+        (try! (as-contract (stx-transfer? amount CONTRACT_ADDRESS .donorpass)))
+
+        ;; update campaign map
+        (try! (update-campaign-after-unpledged tx-sender campaign-id amount))
+
+        ;; update investment map
+        (update-investment-after-unpledged tx-sender campaign-id amount)
+
+        ;; mint NFT for tx-sender
+        ;;(mint-nft tx-sender amount)
+        (ok true)
     )
 )
 
@@ -333,6 +373,45 @@
     )
 )
 
+(define-private (update-campaign-after-unpledged (investor principal) (campaign-id uint) (unpledge-amount uint)) 
+    (let 
+        (
+            (found-campaign (unwrap! (get-campaign campaign-id) ERR_ID_NOT_FOUND ))
+            (current-pledged-count (get pledgedCount found-campaign))
+            (current-pledged-amount (get pledgedAmount found-campaign))
+            (current-goal (get fundGoal found-campaign))
+            (new-pledged-amount (- current-pledged-amount unpledge-amount))
+
+            (already-invest-amount (get-investment-amount campaign-id tx-sender))
+        )
+
+        (asserts! (> current-pledged-count u0) ERR_NOT_PLEDGED)
+
+        (ok 
+            (map-set Campaigns campaign-id 
+                (if (is-eq already-invest-amount unpledge-amount)
+                    ;; unpledge all from this investor
+                    (merge 
+                        found-campaign
+                        {
+                            pledgedCount: (- current-pledged-count u1), 
+                            pledgedAmount: new-pledged-amount
+                        } 
+                    )
+                    
+                    ;; unpledge some from this investor
+                    (merge 
+                        found-campaign
+                        {
+                            pledgedAmount: new-pledged-amount
+                        } 
+                    )
+                )
+            )
+        )
+    )
+)
+
 (define-private (update-investment-after-pledged (investor principal) (campaign-id uint) (pledge-amount uint)) 
     (let  
         (
@@ -341,6 +420,25 @@
         (map-set Investments 
                 {contributor: investor, campaignId: campaign-id} 
                 {amount: (+ existing-amount pledge-amount)}
+        )
+    )
+)
+
+(define-private (update-investment-after-unpledged (investor principal) (campaign-id uint) (unpledge-amount uint)) 
+    (let  
+        (
+            (existing-amount (get-investment-amount campaign-id investor))
+            (investment-key {contributor: investor, campaignId: campaign-id})
+        ) 
+
+        (if (is-eq existing-amount unpledge-amount)
+
+            (map-delete Investments investment-key)
+
+            (map-set Investments 
+                    {contributor: investor, campaignId: campaign-id} 
+                    {amount: (- existing-amount unpledge-amount)}
+            )
         )
     )
 )

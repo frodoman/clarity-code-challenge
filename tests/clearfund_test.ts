@@ -755,7 +755,7 @@ Clarinet.test({
         assertEquals(nftReceivedByInvestor, 1)
     },
 });
-/*
+
 // UNPLEDGING FROM A CAMPAIGN
 Clarinet.test({
     name: "031-unpledge: a user should be able to unpledge their investment",
@@ -770,9 +770,10 @@ Clarinet.test({
         block.receipts[1].result.expectOk().expectBool(true)
     },
 });
-/*
+
+
 Clarinet.test({
-    name: "unpledge: the unpledge amount is deducted from clearfund contract on successful unpledge",
+    name: "032-unpledge: the unpledge amount is deducted from clearfund contract on successful unpledge",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -788,8 +789,9 @@ Clarinet.test({
     },
 });
 
+
 Clarinet.test({
-    name: "unpledge: the amount pledged should decrement by the same amount a user unpledged",
+    name: "033-unpledge: the amount pledged should decrement by the same amount a user unpledged",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -810,7 +812,7 @@ Clarinet.test({
 });
 
 Clarinet.test({
-    name: "unpledge: the pledgedCount should decrement if a user unpledges their entire investment amount",
+    name: "034-unpledge: the pledgedCount should decrement if a user unpledges their entire investment amount",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -828,7 +830,7 @@ Clarinet.test({
 });
 
 Clarinet.test({
-    name: "unpledge: the pledgedCount should not decrement if a user unpledges some of their investment amount",
+    name: "035-unpledge: the pledgedCount should not decrement if a user unpledges some of their investment amount",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -846,7 +848,7 @@ Clarinet.test({
 });
 
 Clarinet.test({
-    name: "unpledge: a user should not be able to unpledge if the campaign has ended",
+    name: "035-unpledge: a user should not be able to unpledge if the campaign has ended",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -860,7 +862,7 @@ Clarinet.test({
 });
 
 Clarinet.test({
-    name: "unpledge: a user should not be able to unpledge more than they have pledged",
+    name: "036-unpledge: a user should not be able to unpledge more than they have pledged",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -876,7 +878,7 @@ Clarinet.test({
 });
 
 Clarinet.test({
-    name: "unpledge: a user should not be able to unpledge someone else's investment",
+    name: "037-unpledge: a user should not be able to unpledge someone else's investment",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -900,7 +902,7 @@ Clarinet.test({
         block.receipts[0].result.expectErr().expectUint(112)
     },
 });
-
+/*
 // REFUND FROM A CAMPAIGN
 Clarinet.test({
     name: "refund: a user can get refund from the campaign that has ended and not reached its goal",
