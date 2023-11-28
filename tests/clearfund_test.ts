@@ -944,9 +944,9 @@ Clarinet.test({
         assertEquals(stxFundsWallet2AfterRefund, stxFundsWallet2AfterPledge + stxFundsClearfundAfterPledge)
     },
 });
-/*
+
 Clarinet.test({
-    name: "refund: the investment record is deleted from the investment map on successful refund to the user",
+    name: "040-refund: the investment record is deleted from the investment map on successful refund to the user",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -965,7 +965,7 @@ Clarinet.test({
 });
 
 Clarinet.test({
-    name: "refund: a user cannot get refund from a campaign that does not exist",
+    name: "041-refund: a user cannot get refund from a campaign that does not exist",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -977,7 +977,7 @@ Clarinet.test({
 });
 
 Clarinet.test({
-    name: "refund: a user cannot get refund from a campaign where the user did not make any pledges",
+    name: "042-refund: a user cannot get refund from a campaign where the user did not make any pledges",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -993,7 +993,7 @@ Clarinet.test({
 });
 
 Clarinet.test({
-    name: "refund: a user cannot get refund from a campaign that is still active",
+    name: "043-refund: a user cannot get refund from a campaign that is still active",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -1009,7 +1009,7 @@ Clarinet.test({
 });
 
 Clarinet.test({
-    name: "refund: a user cannot get refund from a campaign that has ended and has reached the goal",
+    name: "044-refund: a user cannot get refund from a campaign that has ended and has reached the goal",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -1024,4 +1024,3 @@ Clarinet.test({
         block.receipts[0].result.expectErr().expectUint(115)
     },
 });
-*/

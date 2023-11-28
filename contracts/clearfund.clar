@@ -270,13 +270,14 @@
         (
             (found-campaign (unwrap! (get-campaign campaign-id) ERR_ID_NOT_FOUND ))
             (target-reached (get targetReached found-campaign))
-            (finished (is-campaign-finished campaign-id))
-
+            (end-blcok (get endsAt found-campaign))
+            (finished (is-campaign-finished end-blcok))
+            
             (invested-amount (get-investment-amount campaign-id tx-sender))
         )
-
-        (asserts! (and finished (not target-reached)) (err u20))
         (asserts! (> invested-amount u0) ERR_NOT_PLEDGED)
+        (asserts! finished ERR_NOT_ENDED)
+        (asserts! (not target-reached) ERR_GOAL_NOT_MET)
 
         (try! (withdraw invested-amount tx-sender))
 
@@ -286,10 +287,6 @@
 
         (ok true)
     )
-)
-
-(define-private (withdraw (amount uint) (recipient principal)) 
-    (as-contract (stx-transfer? amount CONTRACT_ADDRESS recipient))
 )
 
 ;; -----------------
@@ -329,6 +326,12 @@
 ;; -----------------
 ;; Private functions
 ;; -----------------
+
+;; withdraw 
+;; transfer STX from .clearfund to a principal
+(define-private (withdraw (amount uint) (recipient principal)) 
+    (as-contract (stx-transfer? amount CONTRACT_ADDRESS recipient))
+)
 
 (define-private (mint-nft (receiver principal) (pledge-amount uint)) 
     (begin 
