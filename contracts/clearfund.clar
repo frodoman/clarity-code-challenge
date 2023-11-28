@@ -48,8 +48,7 @@
 ;; -----------------
 
 ;; launch
-;; Called by a user who wants to launch a new campaign
-;; 
+;; Called by a user to start a campaign
 (define-public (launch (title (string-utf8 256)) 
                        (desp (buff 33)) 
                        (link (string-utf8 256))
@@ -110,7 +109,7 @@
 )
 
 ;; update 
-;; update the title, description and link 
+;; update the title, description and link of a campaign
  (define-public (update (campaign-id uint)
                         (title (string-utf8 256))
                         (desp (buff 33))
@@ -147,6 +146,8 @@
     )  
  )
 
+;; pledge 
+;; Called by an investor to put funds into a campaign
 (define-public (pledge (campaign-id uint) (amount uint))
     
     (let 
@@ -186,6 +187,8 @@
     )
 )
 
+;; unpledge 
+;; Called by an investor to reduse funds from the existing investment  
 (define-public (unpledge (campaign-id uint) (amount uint))
     
     (let 
@@ -212,12 +215,8 @@
         ;; assert that unplege amount is samller than invested amount 
         (asserts! (<= amount invested-amount) ERR_INVALID_UNPLEDGE_AMT)
         
-        ;; stx-transfer to to the NFT contract for now 
-        ;;(try! (as-contract (stx-transfer? amount CONTRACT_ADDRESS .donorpass)))
+        ;; send STX to the investor
         (try! (withdraw amount tx-sender))
-        ;; TODO: - 
-        ;; why tx-sender not working?? 
-        ;; (try! (as-contract (stx-transfer? amount CONTRACT_ADDRESS tx-sender)))
 
         ;; update campaign map
         (try! (update-campaign-after-unpledged tx-sender campaign-id amount))
@@ -229,6 +228,8 @@
     )
 )
 
+;; claim 
+;; Called by a campaign owner to transfer all raised funds from smart contract to campaign owner
 (define-public (claim (campaign-id uint)) 
 
     (let  
@@ -265,6 +266,8 @@
     )
 )
 
+;; refund 
+;; Called by an investor to cancel investment 
 (define-public (refund (campaign-id uint)) 
     (let 
         (
@@ -294,6 +297,7 @@
 ;; -----------------
 
 ;; get-campaign
+;; Finds a campaign by provided ID
 (define-read-only (get-campaign (campaign-id uint))
     (ok 
         (unwrap! 
@@ -303,23 +307,26 @@
     )
 )
 
+;; get-investment-amount 
+;; Returns the invested amount for an investor related to the provided campaign id
 (define-read-only (get-investment-amount (campaign-id uint) (investor principal) ) 
     (let 
         (
             (investment-key {contributor: investor, campaignId: campaign-id})
-            (existing-invest-amount (map-get? Investments investment-key))
+            (existing-invest (map-get? Investments investment-key))
         )
-        (default-to u0 (get amount existing-invest-amount))
+        (default-to u0 (get amount existing-invest))
     )
 )
+
 
 (define-read-only (get-investment (campaign-id uint) (investor principal) ) 
     (let 
         (
             (investment-key {contributor: investor, campaignId: campaign-id})
-            (existing-invest-amount (map-get? Investments investment-key))
+            (existing-invest (map-get? Investments investment-key))
         )
-        (ok existing-invest-amount)
+        (ok existing-invest)
     )
 )
 

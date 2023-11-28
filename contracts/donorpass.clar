@@ -15,21 +15,25 @@
 ;; Trait functions
 ;; 
 
-;; (get-last-token-id () (response uint uint))
+;; get-last-token-id
+;; Return the latest NFT ID
 (define-public (get-last-token-id)  
     (ok (var-get lastTokenId))
 )
 
-;; (get-owner (uint) (response (optional principal) uint))
+;; get-owner 
+;; Return the owner from an NFT id
 (define-public (get-owner (nft-id uint))
     (ok (nft-get-owner? donorpass nft-id))
 )
 
-;; (get-token-uri (uint) (response (optional (string-ascii 256)) uint))
+;; get-token-uri
 (define-public (get-token-uri (nft-id uint))
      (ok none)
 )
 
+;; transfer 
+;; Transfer the ownership of an NFT
 (define-public (transfer (token-id uint) (sender principal) (recipient principal))
 	(begin
 		(asserts! (is-eq tx-sender sender) ERR_NOT_TOKEN_OWNER)
@@ -37,6 +41,8 @@
 	)
 )
 
+;; mint
+;; Create an NFT for recipient
 (define-public (mint (recipient principal)) 
     (let 
         (
