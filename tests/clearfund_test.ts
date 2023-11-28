@@ -762,7 +762,7 @@ Clarinet.test({
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
-        const wallet2 = accounts.get("wallet_2")!.address
+        const wallet2 = accounts.get("wallet_3")!.address
 
         chain.mineBlock([ launch(wallet1) ])
         chain.mineEmptyBlockUntil(40)
@@ -902,10 +902,10 @@ Clarinet.test({
         block.receipts[0].result.expectErr().expectUint(112)
     },
 });
-/*
+
 // REFUND FROM A CAMPAIGN
 Clarinet.test({
-    name: "refund: a user can get refund from the campaign that has ended and not reached its goal",
+    name: "038-refund: a user can get refund from the campaign that has ended and not reached its goal",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -922,7 +922,7 @@ Clarinet.test({
 });
 
 Clarinet.test({
-    name: "refund: the total amount pledged is refunded to the investor from the campaign on successful refund",
+    name: "039-refund: the total amount pledged is refunded to the investor from the campaign on successful refund",
     async fn(chain: Chain, accounts: Map<string, Account>) {
         const deployer = accounts.get("deployer")!.address
         const wallet1 = accounts.get("wallet_1")!.address
@@ -944,7 +944,7 @@ Clarinet.test({
         assertEquals(stxFundsWallet2AfterRefund, stxFundsWallet2AfterPledge + stxFundsClearfundAfterPledge)
     },
 });
-
+/*
 Clarinet.test({
     name: "refund: the investment record is deleted from the investment map on successful refund to the user",
     async fn(chain: Chain, accounts: Map<string, Account>) {

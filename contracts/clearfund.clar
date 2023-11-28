@@ -213,7 +213,11 @@
         (asserts! (<= amount invested-amount) ERR_INVALID_UNPLEDGE_AMT)
         
         ;; stx-transfer to to the NFT contract for now 
-        (try! (as-contract (stx-transfer? amount CONTRACT_ADDRESS .donorpass)))
+        ;;(try! (as-contract (stx-transfer? amount CONTRACT_ADDRESS .donorpass)))
+        (try! (withdraw amount tx-sender))
+        ;; TODO: - 
+        ;; why tx-sender not working?? 
+        ;; (try! (as-contract (stx-transfer? amount CONTRACT_ADDRESS tx-sender)))
 
         ;; update campaign map
         (try! (update-campaign-after-unpledged tx-sender campaign-id amount))
@@ -221,8 +225,6 @@
         ;; update investment map
         (update-investment-after-unpledged tx-sender campaign-id amount)
 
-        ;; mint NFT for tx-sender
-        ;;(mint-nft tx-sender amount)
         (ok true)
     )
 )
@@ -263,9 +265,32 @@
     )
 )
 
-;;(define-public (unpledge (campaign-id uint) (amount uint)) 
+(define-public (refund (campaign-id uint)) 
+    (let 
+        (
+            (found-campaign (unwrap! (get-campaign campaign-id) ERR_ID_NOT_FOUND ))
+            (target-reached (get targetReached found-campaign))
+            (finished (is-campaign-finished campaign-id))
 
-;;)
+            (invested-amount (get-investment-amount campaign-id tx-sender))
+        )
+
+        (asserts! (and finished (not target-reached)) (err u20))
+        (asserts! (> invested-amount u0) ERR_NOT_PLEDGED)
+
+        (try! (withdraw invested-amount tx-sender))
+
+        (try! (update-campaign-after-unpledged tx-sender campaign-id invested-amount))
+
+        (update-investment-after-unpledged tx-sender campaign-id invested-amount)
+
+        (ok true)
+    )
+)
+
+(define-private (withdraw (amount uint) (recipient principal)) 
+    (as-contract (stx-transfer? amount CONTRACT_ADDRESS recipient))
+)
 
 ;; -----------------
 ;; Read only functions
