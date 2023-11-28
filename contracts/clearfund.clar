@@ -308,7 +308,7 @@
 )
 
 ;; get-investment-amount 
-;; Returns the invested amount for an investor related to the provided campaign id
+;; Returns the invested amount for an investor related to a campaign id
 (define-read-only (get-investment-amount (campaign-id uint) (investor principal) ) 
     (let 
         (
@@ -319,7 +319,8 @@
     )
 )
 
-
+;; get-investment 
+;; Returns the investment tuple for an investor related to a campaign id 
 (define-read-only (get-investment (campaign-id uint) (investor principal) ) 
     (let 
         (
@@ -340,6 +341,8 @@
     (as-contract (stx-transfer? amount CONTRACT_ADDRESS recipient))
 )
 
+;; mint-nft
+;; Create an NFT for a receiver 
 (define-private (mint-nft (receiver principal) (pledge-amount uint)) 
     (begin 
         (asserts! ( >= pledge-amount u500) ERR_NOT_ENOUGH_TO_MINT_NFT)
@@ -348,7 +351,8 @@
     )
 )
 
-
+;; is-campaign-finished
+;; Find out if a campaign is finished based on the end block of a campaign 
 (define-private (is-campaign-finished (end-at-block uint )) 
 
     (if 
@@ -358,6 +362,8 @@
     )
 )
 
+;; is-campaign-started
+;; Check if a campaign is started based on the startsAt of a campaign
 (define-private (is-campaign-started (start-at-block uint))
     (if 
         ( < start-at-block block-height)
@@ -366,6 +372,8 @@
     )
 )
 
+;; update-campaign-after-pledged
+;; Update campaign map after it's been pledged 
 (define-private (update-campaign-after-pledged (investor principal) (campaign-id uint) (pledge-amount uint)) 
     (let 
         (
@@ -408,6 +416,8 @@
     )
 )
 
+;; update-campaign-after-unpledged
+;; Update campaign map after its been unpledged
 (define-private (update-campaign-after-unpledged (investor principal) (campaign-id uint) (unpledge-amount uint)) 
     (let 
         (
@@ -447,6 +457,8 @@
     )
 )
 
+;; update-investment-after-pledged
+;; Update investments map after its been pledged
 (define-private (update-investment-after-pledged (investor principal) (campaign-id uint) (pledge-amount uint)) 
     (let  
         (
@@ -459,6 +471,8 @@
     )
 )
 
+;; update-investment-after-unpledged 
+;; Update investments map after its been unpledged
 (define-private (update-investment-after-unpledged (investor principal) (campaign-id uint) (unpledge-amount uint)) 
     (let  
         (
@@ -478,9 +492,13 @@
     )
 )
 
+;; calculate-new-pledge-count
+;; Calculate the new pledge count based on previousely invested amount
 (define-private (calculate-new-pledge-count (existing-invest-amount uint) (current-pledged-count uint)) 
     (if (and (> existing-invest-amount u0) (> current-pledged-count u0))
+        ;; the same investor has pledged before 
         current-pledged-count
+        ;; from a new investor 
         (+ current-pledged-count u1) 
     )           
 )
