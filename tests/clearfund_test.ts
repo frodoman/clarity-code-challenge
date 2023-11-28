@@ -109,7 +109,7 @@ Clarinet.test({
         const newCampaign = chain.callReadOnlyFn(
             'clearfund',
             'get-campaign',
-            [types.uint(0)],
+            [types.uint(1)],
             wallet_1
         );
 
@@ -223,7 +223,7 @@ Clarinet.test({
         ]);
 
         let block2 = chain.mineBlock([
-            Tx.contractCall('clearfund', 'cancel', [types.uint(0)], wallet_1)
+            Tx.contractCall('clearfund', 'cancel', [types.uint(1)], wallet_1)
         ])
 
         const cancelledCampaign = block2.receipts[0].result;
@@ -232,7 +232,7 @@ Clarinet.test({
         const newCampaign = chain.callReadOnlyFn(
             'clearfund',
             'get-campaign',
-            [types.uint(0)],
+            [types.uint(1)],
             wallet_1
         );
 
@@ -299,13 +299,13 @@ Clarinet.test({
         chain.mineEmptyBlockUntil(5)
 
         let block2 = chain.mineBlock([
-            Tx.contractCall('clearfund', 'update', [types.uint(0), types.utf8("New Title"), types.buff("New description"), types.utf8("https://newexample.org")], wallet_1)
+            Tx.contractCall('clearfund', 'update', [types.uint(1), types.utf8("New Title"), types.buff("New description"), types.utf8("https://newexample.org")], wallet_1)
         ])
 
         const updatedCampaign = chain.callReadOnlyFn(
             'clearfund',
             'get-campaign',
-            [types.uint(0)],
+            [types.uint(1)],
             wallet_1
         );
 
@@ -356,7 +356,7 @@ Clarinet.test({
         chain.mineEmptyBlockUntil(200)
 
         let block2 = chain.mineBlock([
-            Tx.contractCall('clearfund', 'update', [types.uint(0), types.utf8("New Title"), types.buff("New description"), types.utf8("https://newexample.org")], wallet_1)
+            Tx.contractCall('clearfund', 'update', [types.uint(1), types.utf8("New Title"), types.buff("New description"), types.utf8("https://newexample.org")], wallet_1)
         ])
 
         const expectedCampaign = block2.receipts[0].result
@@ -381,19 +381,13 @@ Clarinet.test({
         chain.mineEmptyBlockUntil(5)
 
         let block2 = chain.mineBlock([
-            Tx.contractCall('clearfund', 'pledge', [types.uint(0), types.uint(20000)], wallet_2)
+            Tx.contractCall('clearfund', 'pledge', [types.uint(1), types.uint(20000)], wallet_2)
         ])
-
-        // let block3 = chain.mineBlock([
-        //     Tx.contractCall('clearfund', 'update', [types.uint(0), types.utf8("New Title"), types.buff("New description"), types.utf8("https://newexample.org")], wallet_1)
-        // ])
-        // const updateResult = block3.receipts[0].result
-        // updateResult.expectErr().expectUint(110);
 
         const claimedCampaign = chain.callReadOnlyFn(
             'clearfund',
             'get-campaign',
-            [types.uint(0)],
+            [types.uint(1)],
             wallet_1
         );
 
@@ -422,11 +416,11 @@ Clarinet.test({
         chain.mineEmptyBlockUntil(5)
 
         let block2 = chain.mineBlock([
-            Tx.contractCall('clearfund', 'pledge', [types.uint(0), types.uint(20000)], wallet_2)
+            Tx.contractCall('clearfund', 'pledge', [types.uint(1), types.uint(20000)], wallet_2)
         ])
 
         let block3 = chain.mineBlock([
-            Tx.contractCall('clearfund', 'claim', [types.uint(0)], wallet_1)
+            Tx.contractCall('clearfund', 'claim', [types.uint(1)], wallet_1)
         ])
 
         const claimedCampaignBlock = block3.receipts[0].result
@@ -436,7 +430,7 @@ Clarinet.test({
         const claimedCampaign = chain.callReadOnlyFn(
             'clearfund',
             'get-campaign',
-            [types.uint(0)],
+            [types.uint(1)],
             wallet_1
         );
 
@@ -463,7 +457,7 @@ Clarinet.test({
         chain.mineEmptyBlockUntil(5)
 
         let block2 = chain.mineBlock([
-            Tx.contractCall('clearfund', 'claim', [types.uint(0)], wallet_1)
+            Tx.contractCall('clearfund', 'claim', [types.uint(1)], wallet_1)
         ])
 
         const claimedCampaignBlock = block2.receipts[0].result
@@ -473,7 +467,7 @@ Clarinet.test({
         const claimedCampaign = chain.callReadOnlyFn(
             'clearfund',
             'get-campaign',
-            [types.uint(0)],
+            [types.uint(1)],
             wallet_1
         );
 
@@ -501,11 +495,11 @@ Clarinet.test({
         chain.mineEmptyBlockUntil(5)
 
         let block2 = chain.mineBlock([
-            Tx.contractCall('clearfund', 'pledge', [types.uint(0), types.uint(20000)], wallet_2)
+            Tx.contractCall('clearfund', 'pledge', [types.uint(1), types.uint(20000)], wallet_2)
         ])
 
         let block3 = chain.mineBlock([
-            Tx.contractCall('clearfund', 'claim', [types.uint(0)], wallet_1)
+            Tx.contractCall('clearfund', 'claim', [types.uint(1)], wallet_1)
         ])
 
         const claimedCampaignBlock = block3.receipts[0].result
@@ -515,7 +509,7 @@ Clarinet.test({
         const claimedCampaign = chain.callReadOnlyFn(
             'clearfund',
             'get-campaign',
-            [types.uint(0)],
+            [types.uint(1)],
             wallet_1
         );
 
@@ -523,7 +517,7 @@ Clarinet.test({
         expectedCampaign.expectOk();
  
         let block4 = chain.mineBlock([
-            Tx.contractCall('clearfund', 'claim', [types.uint(0)], wallet_1)
+            Tx.contractCall('clearfund', 'claim', [types.uint(1)], wallet_1)
         ])
 
         const failedClaim = block4.receipts[0].result;
@@ -547,11 +541,11 @@ Clarinet.test({
         chain.mineEmptyBlockUntil(5)
 
         let block2 = chain.mineBlock([
-            Tx.contractCall('clearfund', 'pledge', [types.uint(0), types.uint(20000)], wallet_2)
+            Tx.contractCall('clearfund', 'pledge', [types.uint(1), types.uint(20000)], wallet_2)
         ])
 
         let block3 = chain.mineBlock([
-            Tx.contractCall('clearfund', 'claim', [types.uint(0)], wallet_2)
+            Tx.contractCall('clearfund', 'claim', [types.uint(1)], wallet_2)
         ])
 
         const claimedCampaign = block3.receipts[0].result

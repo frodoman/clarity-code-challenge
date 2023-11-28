@@ -20,12 +20,12 @@ let launchArguments = [
 ]
 
 const pledgeData = {
-    campaignId: types.uint(0),
+    campaignId: types.uint(1),
     amount: types.uint(1000)
 }
 
 const unpledgeData = {
-    campaignId: types.uint(0),
+    campaignId: types.uint(1),
     amount: types.uint(500)
 }
 

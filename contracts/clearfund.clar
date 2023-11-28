@@ -72,7 +72,7 @@
             ERR_TITLE_DESCRIPTION_LINK_EMPTY 
         )
 
-        (map-set Campaigns current-id {
+        (map-set Campaigns next-id {
             title: title,
             description: desp, 
             link: link,
