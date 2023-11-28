@@ -196,7 +196,7 @@
             (found-campaign (unwrap! (get-campaign campaign-id) ERR_ID_NOT_FOUND ))
             (start-block (get startsAt found-campaign))
             (end-blcok (get endsAt found-campaign))
-            (did-claimed (get claimed found-campaign))
+            (did-claim (get claimed found-campaign))
             (invested-amount (get-investment-amount campaign-id tx-sender))
         )
 
@@ -204,7 +204,7 @@
         (asserts! (not (is-campaign-finished end-blcok)) ERR_ENDED)
 
         ;; assert campaign is not been claimed 
-        (asserts! (is-eq did-claimed false) ERR_ALREADY_CLAIMED)
+        (asserts! (is-eq did-claim false) ERR_ALREADY_CLAIMED)
 
         ;; assert amount is valid
         (asserts! (> amount u0) ERR_PLEDGE_GREATER_THAN_ZERO)
@@ -252,7 +252,6 @@
         (try! (as-contract (stx-transfer? current-pledged CONTRACT_ADDRESS campaign-owner)))
 
         ;; update map record for the campaign 
-
         (ok 
             (map-set Campaigns campaign-id 
                 (merge 
@@ -267,7 +266,7 @@
 )
 
 ;; refund 
-;; Called by an investor to cancel investment 
+;; Called by an investor to cancel investment and get refund
 (define-public (refund (campaign-id uint)) 
     (let 
         (
